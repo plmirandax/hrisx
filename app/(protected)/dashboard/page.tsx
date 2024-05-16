@@ -60,11 +60,19 @@ export default async function Dashboard() {
     return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
   }
 
+  if (user?.user.role !== 'Administrator') {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
+
   const leaves = await fetchLeaveData(user?.user.id);
   const pendingLeaves = leaves.filter(leave => leave.status === 'Pending');
   const totalPendingLeaves = pendingLeaves.length
   const approvedLeaves = leaves.filter(leave => leave.status === 'Approved');
   const totalApprovedLeaves = approvedLeaves.length
+  const declinedLeaves = leaves.filter(leave => leave.status === 'Declined');
+  const totalDeclinedLeaves = declinedLeaves.length
+ 
+  const totalLeaves = leaves.length;
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -103,7 +111,7 @@ export default async function Dashboard() {
               <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">+12,234</div>
+              <div className="text-2xl font-bold mt-3">{totalDeclinedLeaves}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-3">
@@ -112,7 +120,7 @@ export default async function Dashboard() {
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-
+            <div className="text-2xl font-bold mt-3">{totalLeaves}</div>
             </CardContent>
           </Card>
         </div>
