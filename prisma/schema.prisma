@@ -37,7 +37,7 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
-  role          UserRole @default(User)
+  role          UserRole? @default(User)
   department    String?
   leaveBalance  String?
   accounts      Account[]

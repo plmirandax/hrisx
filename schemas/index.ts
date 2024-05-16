@@ -1,5 +1,6 @@
 import * as z from "zod";
 import { UserRole } from "@prisma/client";
+import { User } from "lucide-react";
 
 export const SettingsSchema = z.object({
   name: z.optional(z.string()),
@@ -65,6 +66,10 @@ export const RegisterSchema = z.object({
   lastName: z.string().min(1, {
     message: "Last Name is required",
   }),
+  address: z.string().optional(),
+  contactNo: z.string().optional(),
+  approverId: z.string(),
+  role: z.enum([UserRole.Administrator, UserRole.User, UserRole.Approver]).optional(),
 });
 
 export const CreateLeaveTypeSchema = z.object({

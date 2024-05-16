@@ -8,6 +8,7 @@ import {
   MoreHorizontal,
   PlusCircleIcon,
   User,
+  User2,
 } from "lucide-react"
 
 import {
@@ -39,6 +40,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import Image from "next/image"
 import Footer from "@/components/footer/footer"
 import { CreatLeaveForm } from "./_components/leave-form"
+import { RegisterForm } from "@/components/auth/register-form"
+import { fetchSubordinates } from "./_data/fetch-subordinates"
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -63,7 +66,7 @@ export default async function Dashboard() {
   if (user?.user.role !== 'Administrator') {
     return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
   }
-
+  const subordinates = await fetchSubordinates(user?.user.id);
   const leaves = await fetchLeaveData(user?.user.id);
   const pendingLeaves = leaves.filter(leave => leave.status === 'Pending');
   const totalPendingLeaves = pendingLeaves.length
@@ -79,6 +82,7 @@ export default async function Dashboard() {
      <div className="flex justify-between items-center mb-[-8px] ml-8 mr-8 mt-3">
         <Label className="text-2xl font-bold">Welcome to your dashboard, {user?.user.firstName}!</Label>
         <CreatLeaveForm />
+        <RegisterForm />
       </div>
       
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
@@ -144,8 +148,8 @@ export default async function Dashboard() {
                 <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="hidden w-[100px] sm:table-cell">
-                          <span className="sr-only">Image</span>
+                        <TableHead className="hidden w-[50px] sm:table-cell">
+                          <span className="">Image</span>
                         </TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Leave Type</TableHead>
@@ -171,14 +175,14 @@ export default async function Dashboard() {
     .map(leave => (
       <TableBody key={leave.id}>
                       <TableRow>
-                        <TableCell className="hidden sm:table-cell">
+                        <TableCell className="hidden sm:table-cell w-[50px]">
                           {leave.user.image ? (
                             <Image
                               alt="User Image"
                               className="aspect-square rounded-md object-cover"
-                              height="44"
+                              height="30"
                               src={leave.user.image}
-                              width="44"
+                              width="30"
                             />
                           ) : (
                             <Avatar className="aspect-square rounded-md object-cover">
@@ -273,38 +277,50 @@ export default async function Dashboard() {
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-5">
-            <CardHeader>
-            <div className="flex flex-row items-center justify-between w-full">
+  <CardHeader>
+    <div className="flex flex-row items-center justify-between w-full">
       <div className="grid gap-2">
         <CardTitle>Subordinates</CardTitle>
         <CardDescription>Your subordinates.</CardDescription>
       </div>
       <Button asChild size="sm" className="ml-auto mr-4">
-        <Link href="/dashboard/leave">
+        <Link href="/dashboard/employee-management">
           View All
           <ArrowUpRight className="h-4 w-4" />
         </Link>
       </Button>
     </div>
-            </CardHeader>
-            <CardContent className="grid gap-8">
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Olivia Martin
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    olivia.martin@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$1,999.00</div>
-              </div>
-            </CardContent>
-          </Card>
+  </CardHeader>
+  <CardContent className="grid gap-8">
+    {subordinates?.map((subordinate, index) => (
+      <div key={index} className="flex items-center gap-4">
+                  {subordinate.image ? (
+                            <Image
+                              alt="User Image"
+                              className="aspect-square rounded-md object-cover"
+                              height="30"
+                              src={subordinate.image}
+                              width="30"
+                            />
+                          ) : (
+                            <Avatar className="aspect-square rounded-md object-cover">
+                              <AvatarFallback>
+                                <User className="h-4 w-4" />
+                              </AvatarFallback>
+                            </Avatar>
+                          )}
+        <div className="grid gap-1">
+          <p className="text-sm font-semibold leading-none">
+            {subordinate.firstName} {subordinate.lastName}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {subordinate.email}
+          </p>
+        </div>
+      </div>
+    ))}
+  </CardContent>
+</Card>
         </div>
       </main>
       <Footer />

@@ -15,19 +15,19 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Icons } from "../ui/icons"
-import { CalendarCheck, File, FileTextIcon, ListChecks, Settings } from "lucide-react"
+import { CalendarCheck, File, FileTextIcon, ListChecks, Settings, Users2Icon } from "lucide-react"
 import { FcDocument } from "react-icons/fc"
 import { FaTasks } from "react-icons/fa"
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "View Payslip",
+    title: "View Payslip 💵",
     href: "/dashboard/payslip",
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
-    title: "Payslip Reports",
+    title: "Payslip Reports 📈",
     href: "/dashboard/payslip/reports",
     description:
       "For sighted users to preview content available behind a link.",
@@ -42,10 +42,10 @@ export function SystemMenu() {
           <NavigationMenuTrigger><CalendarCheck className="h-4 w-4 mr-2"/>Leave Management</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <ListItem href="/dashboard/leave" title="Leave Dashboard">
+              <ListItem href="/dashboard/leave" title="Leave Dashboard 📅">
                 Re-usable components built using Radix UI and Tailwind CSS.
               </ListItem>
-              <ListItem href="/dashboard/leave/reports" title="Leave Reports">
+              <ListItem href="/dashboard/leave/reports" title="Leave Reports 📈">
                 How to install dependencies and structure your app.
               </ListItem>
             </ul>
@@ -68,14 +68,14 @@ export function SystemMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger><Settings className="h-4 w-4 mr-2" />Settings</NavigationMenuTrigger>
+          <NavigationMenuTrigger><Users2Icon className="h-4 w-4 mr-2"/>Employee Management</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <ListItem href="/dashboard/settings" title="System Settings">
-                You can manage your system settings here.
+          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              <ListItem href="/dashboard/employee-management" title="Employee Dashboard 👨‍👩‍👧‍👧">
+                Re-usable components built using Radix UI and Tailwind CSS.
               </ListItem>
-              <ListItem href="/dashboard/profile" title="Profile">
-                You can manage your profile here.
+              <ListItem href="/dashboard/employee-management/reports" title="Employee Management Reports 📈">
+                How to install dependencies and structure your app.
               </ListItem>
             </ul>
           </NavigationMenuContent>
@@ -84,6 +84,13 @@ export function SystemMenu() {
           <Link href="/dashboard/kanban" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               <FaTasks className="h-4 w-4 mr-2"/>Kanban Board
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="/dashboard/kanban" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Settings className="h-4 w-4 mr-2"/>Settings
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>

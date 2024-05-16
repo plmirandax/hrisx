@@ -80,3 +80,12 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+body {
+  overflow-y: scroll; /* Always show vertical scrollbar */
+}
+
+/* Or if you have a container element wrapping your content */
+.container {
+  overflow-y: scroll; /* Always show vertical scrollbar */
+}
