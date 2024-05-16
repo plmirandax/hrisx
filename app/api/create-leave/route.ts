@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
+import { revalidatePath } from 'next/cache';
 
 // Define the schema for the request body
 const schema = z.object({

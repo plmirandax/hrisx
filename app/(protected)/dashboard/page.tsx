@@ -35,10 +35,18 @@ import {
 import { Label } from "@/components/ui/label"
 import { auth } from "@/auth"
 import { fetchLeaveData } from "./_data/fetchdata"
-import { LeaveForm } from "./_components/leave-form"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
 import Footer from "@/components/footer/footer"
+import { CreatLeaveForm } from "./_components/leave-form"
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+  return `${month}-${day}-${year}`;
+}
 
 export default async function Dashboard() {
 
@@ -62,7 +70,7 @@ export default async function Dashboard() {
     <div className="flex min-h-screen w-full flex-col">
      <div className="flex justify-between items-center mb-[-8px] ml-8 mr-8 mt-3">
         <Label className="text-2xl font-bold">Welcome to your dashboard, {user?.user.firstName}!</Label>
-        <LeaveForm />
+        <CreatLeaveForm />
       </div>
       
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
@@ -147,10 +155,13 @@ export default async function Dashboard() {
                           <span className="sr-only">Actions</span>
                         </TableHead>
                       </TableRow>
-                    </TableHeader>
-                    {leaves.filter(leave => leave.status === 'Pending')
-                    .map(leave => (
-                    <TableBody key={leave.id}>
+                      </TableHeader>
+  {leaves
+    .filter(leave => leave.status === 'Pending')
+    .reverse()
+    .slice(0, 5) // Limit to the last 5 records
+    .map(leave => (
+      <TableBody key={leave.id}>
                       <TableRow>
                         <TableCell className="hidden sm:table-cell">
                           {leave.user.image ? (
@@ -180,12 +191,12 @@ export default async function Dashboard() {
                         </TableCell>
                         <TableCell>  
                           <Badge className="text-xs" variant="outline">
-                            {leave.startDate}
+                          {formatDate(leave.startDate)}
                           </Badge>
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
                           <Badge className="text-xs" variant="outline">
-                            {leave.endDate}
+                          {formatDate(leave.endDate)}
                           </Badge>
                         </TableCell>
                         <TableCell className="hidden md:table-cell">

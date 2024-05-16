@@ -87,8 +87,8 @@ export const CreateLeaveSchema = z.object({
   reason: z.string().min(1, {
     message: "Reason is required"
   }),
-  leaveTypeId: z.string().optional(),
-  approverId: z.string().optional(),
+  leaveType: z.string(),
+  approverId: z.string(),
   userId: z.string()
 })
 
