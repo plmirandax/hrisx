@@ -104,7 +104,7 @@ export const RegisterForm = () => {
         <DialogHeader>
           <DialogTitle>Employee Information</DialogTitle>
           <DialogDescription>
-            Enter your required employee details. Click submit when you're done.
+            Enter your required employee details. Click submit when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

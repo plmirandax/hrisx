@@ -105,7 +105,7 @@ export const CreatLeaveForm = () => {
         <DialogHeader>
           <DialogTitle>Edit Leave Form</DialogTitle>
           <DialogDescription>
-            Enter your leave details here. Click submit when you're done.
+            Enter your leave details here. Click submit when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
