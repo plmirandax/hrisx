@@ -33,6 +33,20 @@ export const sendPasswordResetEmail = async (
   });
 };
 
+export const sendLeaveNotif = async (
+  email: string,
+  token: string,
+) => {
+
+  await resend.emails.send({
+    from: "info@rdhardware.net",
+    to: email,
+    subject: "Reset your password",
+    html: `<p>Have sent a leave application.</p>
+    <p>This is an auto generated email. Please do not reply.</p>`
+  });
+};
+
 export const sendVerificationEmail = async (
   email: string, 
   token: string

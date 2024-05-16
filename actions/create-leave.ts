@@ -6,6 +6,8 @@ import * as z from "zod";
 import { prisma } from "@/lib/db";
 import { CreateLeaveSchema, CreateLeaveTypeSchema, RegisterSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";
+import { sendLeaveNotif } from "@/lib/mail";
+import { generateVerificationToken } from "@/lib/tokens";
 
 
 export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => {
@@ -28,6 +30,7 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
       approverId
     },
   });
+
   revalidatePath('/dashboard');
   return { success: "Leave application successfully submitted!" };
 

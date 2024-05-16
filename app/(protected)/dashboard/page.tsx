@@ -6,9 +6,7 @@ import {
   DollarSignIcon,
   Hourglass,
   MoreHorizontal,
-  PlusCircleIcon,
   User,
-  User2,
 } from "lucide-react"
 
 import {

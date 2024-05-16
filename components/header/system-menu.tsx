@@ -88,7 +88,7 @@ export function SystemMenu() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/dashboard/kanban" legacyBehavior passHref>
+          <Link href="/dashboard/settings" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               <Settings className="h-4 w-4 mr-2"/>Settings
             </NavigationMenuLink>

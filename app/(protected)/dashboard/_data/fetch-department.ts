@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/db";
 
-export const fetchLeaveType = async () => {
+export const fetchDepartment = async () => {
   try {
-    const leaveTypes = await prisma.leaveType.findMany({
+    const leaveData = await prisma.department.findMany({
     });
-    return leaveTypes;
+    return leaveData;
   } catch (error) {
     console.error('Error fetching leave data:', error);
     return [];

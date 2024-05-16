@@ -3,6 +3,7 @@
 import * as z from "zod";
 import { prisma } from "@/lib/db";
 import { CreateLeaveTypeSchema } from "@/schemas";
+import { revalidatePath } from "next/cache";
 
 export const createLeaveType = async (values: z.infer<typeof CreateLeaveTypeSchema>) => {
   const validatedFields = CreateLeaveTypeSchema.safeParse(values);
@@ -19,6 +20,6 @@ export const createLeaveType = async (values: z.infer<typeof CreateLeaveTypeSche
       description
     },
   });
-
+revalidatePath('/dashboard/settings')
   return { success: "Leave type created successfully!" };
 };
