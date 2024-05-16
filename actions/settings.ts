@@ -82,7 +82,6 @@ export const settings = async (
       lastName: updatedUser.lastName,
       email: updatedUser.email,
       isTwoFactorEnabled: updatedUser.isTwoFactorEnabled,
-      role: updatedUser.role,
     }
   });
 
