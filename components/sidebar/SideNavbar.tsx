@@ -1,0 +1,62 @@
+'use client';
+
+import {
+  CalendarCheck2,
+  FileClockIcon,
+  HomeIcon,
+  LineChart,
+  Scroll,
+  Settings,
+  User,
+  Users,
+} from 'lucide-react';
+import { SidebarDesktop } from './sidebar-desktop';
+import { SidebarItems } from '../../types/type';
+import { SidebarButton } from './sidebar-button';
+import { useMediaQuery } from 'usehooks-ts';
+import { SidebarMobile } from './sidebar-mobile';
+
+const sidebarItems: SidebarItems = {
+  links: [
+    { label: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+    { label: 'Leave Management', href: '/dashboard/leave-management', icon: CalendarCheck2 },
+    { label: 'PLS Management', href: '/dashboard/pls-management', icon: FileClockIcon },
+    {
+      href: '/dashboard/payslip-management',
+      icon: Scroll,
+      label: 'Payslip Management',
+    },
+    {
+      href: '/dashboard/employee-management',
+      icon: Users,
+      label: 'Employee Management',
+    },
+    {
+      href: '/dashboard/reports',
+      icon: LineChart,
+      label: 'Reports',
+    },
+    {
+      href: '/dashboard/profile',
+      icon: User,
+      label: 'Profile',
+    },
+    {
+      href: '/dashboard/settings',
+      icon: Settings,
+      label: 'System Settings',
+    },
+  ],
+};
+
+export function Sidebar() {
+  const isDesktop = useMediaQuery('(min-width: 640px)', {
+    initializeWithValue: false,
+  });
+
+  if (isDesktop) {
+    return <SidebarDesktop sidebarItems={sidebarItems} />;
+  }
+
+  return <SidebarMobile sidebarItems={sidebarItems} />;
+}
