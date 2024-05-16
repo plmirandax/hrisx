@@ -85,10 +85,22 @@ export const RegisterForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      register(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          
+          if (!data.error) {
+            form.reset(); // Reset form fields on successful submission
+          }
+        })
+        .finally(() => {
+          // Reset error and success messages after submission
+          setTimeout(() => {
+            setError(undefined);
+            setSuccess(undefined);
+          }, 5000); // Clear messages after 5 seconds (adjust as needed)
+        });
     });
   };
 

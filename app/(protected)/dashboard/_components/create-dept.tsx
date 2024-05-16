@@ -68,14 +68,24 @@ export const CreateDeptForm= () => {
   const onSubmit = (values: z.infer<typeof CreateDepartmentSchema>) => {
     setError("");
     setSuccess("");
-
-    console.log("Form Values:", values);
-
+  
     startTransition(() => {
-      createDepartment(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      createDepartment(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          
+          if (!data.error) {
+            form.reset(); // Reset form fields on successful submission
+          }
+        })
+        .finally(() => {
+          // Reset error and success messages after submission
+          setTimeout(() => {
+            setError(undefined);
+            setSuccess(undefined);
+          }, 5000); // Clear messages after 5 seconds (adjust as needed)
+        });
     });
   };
 

@@ -61,16 +61,27 @@ export const CreateLeaveTypeForm= () => {
   const onSubmit = (values: z.infer<typeof CreateLeaveTypeSchema>) => {
     setError("");
     setSuccess("");
-
-    console.log("Form Values:", values);
-
+  
     startTransition(() => {
-      createLeaveType(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      createLeaveType(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          
+          if (!data.error) {
+            form.reset(); // Reset form fields on successful submission
+          }
+        })
+        .finally(() => {
+          // Reset error and success messages after submission
+          setTimeout(() => {
+            setError(undefined);
+            setSuccess(undefined);
+          }, 5000); // Clear messages after 5 seconds (adjust as needed)
+        });
     });
   };
+  
 
   return (
     <Card className="xl:col-span-2 w-[650px] ml-6">
