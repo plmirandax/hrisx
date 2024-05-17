@@ -16,6 +16,26 @@ enum UserRole {
   PMD
 }
 
+enum Months {
+  January
+  February
+  March
+  April
+  May
+  June
+  July
+  August
+  September
+  October
+  November
+  December
+}
+
+enum Periods {
+  FirstHalf
+  SecondHalf
+}
+
 enum PlsType {
   Official
   Personal
@@ -66,10 +86,9 @@ model Department {
 
 model Payslip {
   id          String @id @default(cuid()) @unique
-  month       String
-  year        String
-  firstHalf   String
-  secondHalf  String
+  payslipFile String
+  months      Months
+  periods     Periods
   userId      String
   user        User @relation("UserToPayslip",fields: [userId], references: [id])
 }

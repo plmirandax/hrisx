@@ -85,7 +85,8 @@ export default async function SettingsPage (){
                       <TableBody key={department.id}>
                         <TableRow>
                           <TableCell className="font-medium">
-                            <div className="font-medium">{department.name}</div>
+                            
+                            <div className="font-medium"><Badge>{department.name}</Badge></div>
                           </TableCell>
                           <TableCell>{department.description}</TableCell>
                           <TableCell>

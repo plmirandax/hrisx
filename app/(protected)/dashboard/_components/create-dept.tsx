@@ -1,11 +1,11 @@
 "use client";
 
 import * as z from "zod";
-import { useEffect, useState, useTransition } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { CreateDepartmentSchema, CreateLeaveSchema } from "@/schemas";
+import { CreateDepartmentSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -18,42 +18,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { PlusCircleIcon } from "lucide-react";
-import { CreateLeave } from "@/actions/create-leave";
-import { Label } from "@/components/ui/label";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { createDepartment } from "@/actions/department-create";
-
-type LeaveType = {
-  id: string;
-  name: string;
-  description: string | null;
-  createdAt: Date;
-};
 
 export const CreateDeptForm= () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const [leaveTypes, setLeaveTypes] = useState<LeaveType[]>([]);
   const [isPending, startTransition] = useTransition();
   const user = useCurrentUser();
 
@@ -76,15 +47,14 @@ export const CreateDeptForm= () => {
           setSuccess(data.success);
           
           if (!data.error) {
-            form.reset(); // Reset form fields on successful submission
+            form.reset();
           }
         })
         .finally(() => {
-          // Reset error and success messages after submission
           setTimeout(() => {
             setError(undefined);
             setSuccess(undefined);
-          }, 5000); // Clear messages after 5 seconds (adjust as needed)
+          }, 5000);
         });
     });
   };
@@ -94,7 +64,7 @@ export const CreateDeptForm= () => {
     <CardHeader className="flex flex-row items-center justify-between">
       <div className="flex flex-row items-center justify-between w-full">
         <div className="grid gap-2">
-          <CardTitle>Departments</CardTitle>
+          <CardTitle className="font-semibold">Departments</CardTitle>
           <CardDescription>Your list of departments.</CardDescription>
         </div>
       </div>
@@ -108,13 +78,12 @@ export const CreateDeptForm= () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel className="font-semibold">Name</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
                         placeholder="Department name.."
-                        className="text-xs"
                       />
                     </FormControl>
                     <FormMessage />
@@ -126,13 +95,12 @@ export const CreateDeptForm= () => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel className="font-semibold">Description</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
                         placeholder="(optional)"
-                        className="text-xs"
                       />
                     </FormControl>
                     <FormMessage />

@@ -20,6 +20,6 @@ export const createLeaveType = async (values: z.infer<typeof CreateLeaveTypeSche
       description
     },
   });
-revalidatePath('/dashboard/settings')
+  revalidatePath('/dashboard/settings')
   return { success: "Leave type created successfully!" };
 };

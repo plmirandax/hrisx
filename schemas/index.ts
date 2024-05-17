@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { UserRole } from "@prisma/client";
+import { Months, Periods, UserRole } from "@prisma/client";
 import { User } from "lucide-react";
 
 export const SettingsSchema = z.object({
@@ -97,3 +97,13 @@ export const CreateLeaveSchema = z.object({
   userId: z.string()
 })
 
+export const UploadPayslipSchema = z.object({
+  payslipFile: z.string().min(1, {
+    message: "Payslip is required."
+  }),
+  months: z.enum([Months.January, Months.February, Months.March, Months.April, Months.May,
+    Months.June, Months.July, Months.August, Months.September, Months.October, Months.November, Months.December
+  ]),
+  periods: z.enum([Periods.FirstHalf, Periods.SecondHalf]),
+  userId: z.string()
+})

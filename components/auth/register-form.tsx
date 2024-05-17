@@ -40,30 +40,30 @@ import {
 } from "../ui/dialog";
 import { PlusCircleIcon } from "lucide-react";
 
-type DepartmentType = {
+type Approvers = {
   id: string;
-  name: string;
-  description: string | null;
+  firstName: string;
+  lastName: string;
 };
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const [departments, setDepartments] = useState<DepartmentType[]>([]);
+  const [approvers, setApprovers] = useState<Approvers[]>([]);
   const user = useCurrentUser();
 
   useEffect(() => {
-    fetch('/api/fetch-leave-type') // replace with your API route
+    fetch('/api/fetch-approver')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
-      .then((data) => setDepartments(data.departments))
+      .then((data) => setApprovers(data.approvers))
       .catch(() =>
-        toast.error('An error occurred while fetching leave types. Please try again.')
+        toast.error('An error occurred while fetching approvers. Please try again.')
       );
   }, []);
 
@@ -77,7 +77,7 @@ export const RegisterForm = () => {
       contactNo: "",
       address: "",
       role: undefined,
-      approverId: user?.approverId,
+      approverId: "",
     },
   });
 
@@ -91,15 +91,14 @@ export const RegisterForm = () => {
           setSuccess(data.success);
           
           if (!data.error) {
-            form.reset(); // Reset form fields on successful submission
+            form.reset();
           }
         })
         .finally(() => {
-          // Reset error and success messages after submission
           setTimeout(() => {
             setError(undefined);
             setSuccess(undefined);
-          }, 5000); // Clear messages after 5 seconds (adjust as needed)
+          }, 5000);
         });
     });
   };
@@ -112,7 +111,7 @@ export const RegisterForm = () => {
           Register Employee
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
           <DialogTitle>Employee Information</DialogTitle>
           <DialogDescription>
@@ -128,7 +127,7 @@ export const RegisterForm = () => {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>First Name</FormLabel>
+                      <FormLabel className="font-semibold">First Name</FormLabel>
                       <FormControl>
                         <Input {...field} disabled={isPending} placeholder="Juan" />
                       </FormControl>
@@ -141,7 +140,7 @@ export const RegisterForm = () => {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>Last Name</FormLabel>
+                      <FormLabel className="font-semibold">Last Name</FormLabel>
                       <FormControl>
                         <Input {...field} disabled={isPending} placeholder="Dela Cruz" />
                       </FormControl>
@@ -155,7 +154,7 @@ export const RegisterForm = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="font-semibold">Email</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -173,7 +172,7 @@ export const RegisterForm = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className="font-semibold">Password</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -186,13 +185,14 @@ export const RegisterForm = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex w-1/2 space-x-4">
+              <div className="flex w-full space-x-4">
+                <div className="w-1/2">
                 <FormField
                   control={form.control}
                   name="role"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Role</FormLabel>
+                      <FormLabel className="font-semibold">Role</FormLabel>
                       <FormControl>
                         <Controller
                           name="role"
@@ -218,15 +218,17 @@ export const RegisterForm = () => {
                     </FormItem>
                   )}
                 />
+                </div>
+                <div className="w-1/2">
                 <FormField
                   control={form.control}
-                  name="role"
+                  name="approverId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Role</FormLabel>
+                      <FormLabel className="font-semibold">Approver</FormLabel>
                       <FormControl>
                         <Controller
-                          name="role"
+                          name="approverId"
                           control={form.control}
                           render={({ field }) => (
                             <Select
@@ -234,12 +236,17 @@ export const RegisterForm = () => {
                               onValueChange={field.onChange}
                               disabled={isPending}
                             >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select role..." />
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select approver..." />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value={UserRole.User}>User</SelectItem>
-                                <SelectItem value={UserRole.Approver}>Approver</SelectItem>
+                                <SelectGroup>
+                                  {approvers.map((approver) => (
+                                    <SelectItem key={approver.id} value={approver.id}>
+                                      {approver.firstName} {approver.lastName}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
                               </SelectContent>
                             </Select>
                           )}
@@ -249,34 +256,43 @@ export const RegisterForm = () => {
                     </FormItem>
                   )}
                 />
+                </div>
+                
+                
               </div>
               <div className="flex w-full space-x-4">
+                <div className="w-1/2">
                 <FormField
                   control={form.control}
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Address</FormLabel>
+                      <FormLabel className="font-semibold">Address</FormLabel>
                       <FormControl>
-                        <Input {...field} disabled={isPending} placeholder="Address" />
+                        <Input {...field} disabled={isPending} placeholder="Complete address.." />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                </div>
+                <div className="w-1/2">
                 <FormField
                   control={form.control}
                   name="contactNo"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Contact No</FormLabel>
+                      <FormLabel className="font-semibold">Contact No.</FormLabel>
                       <FormControl>
-                        <Input {...field} disabled={isPending} placeholder="Contact No" />
+                        <Input {...field} disabled={isPending} placeholder="Contact number.." />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                </div>
+                
+                
               </div>
             </div>
             <FormError message={error} />

@@ -40,6 +40,7 @@ import Footer from "@/components/footer/footer"
 import { CreatLeaveForm } from "./_components/leave-form"
 import { RegisterForm } from "@/components/auth/register-form"
 import { fetchSubordinates } from "./_data/fetch-subordinates"
+import { UploadPayslipForm } from "./_components/payslip-upload"
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -81,6 +82,7 @@ export default async function Dashboard() {
         <Label className="text-2xl font-bold">Welcome to your dashboard, {user?.user.firstName}!</Label>
         <CreatLeaveForm />
         <RegisterForm />
+        <UploadPayslipForm />
       </div>
       
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">

@@ -86,10 +86,21 @@ export const CreatLeaveForm = () => {
     console.log("Form Values:", values);
 
     startTransition(() => {
-      CreateLeave(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      CreateLeave(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          
+          if (!data.error) {
+            form.reset();
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setError(undefined);
+            setSuccess(undefined);
+          }, 5000);
+        });
     });
   };
 
