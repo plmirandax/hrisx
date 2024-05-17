@@ -14,10 +14,9 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { Icons } from "../ui/icons"
 import { CalendarCheck, File, FileTextIcon, ListChecks, Settings, Users2Icon } from "lucide-react"
-import { FcDocument } from "react-icons/fc"
 import { FaTasks } from "react-icons/fa"
+import { useCurrentUser } from "@/hooks/use-current-user"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -35,6 +34,13 @@ const components: { title: string; href: string; description: string }[] = [
 ]
 
 export function SystemMenu() {
+
+  const user = useCurrentUser();
+
+  const isAdmin = user?.role === 'Administrator';
+  const isUser = user?.role === 'User';
+  const isPMD = user?.role === 'PMD';
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -67,6 +73,7 @@ export function SystemMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+        {(isAdmin || isPMD) && (
         <NavigationMenuItem>
           <NavigationMenuTrigger><Users2Icon className="h-4 w-4 mr-2"/>Employee Management</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -80,6 +87,7 @@ export function SystemMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+          )}
         <NavigationMenuItem>
           <Link href="/dashboard/kanban" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>

@@ -1,13 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreateDeptForm } from "../_components/create-dept"
-import { CreateLeaveTypeForm } from "../_components/create-leave-type"
-import { fetchDepartment } from "../_data/fetch-department";
-import { fetchLeaveType } from "../_data/fetch-leave-type";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+import { fetchDepartment } from "../../_data/fetch-department";
+import { CreateDeptForm } from "../../_components/create-dept";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -18,23 +16,23 @@ function formatDate(dateString: string): string {
 }
 
 
-export default async function SettingsProfilePage() {
+export default async function DepartmentSettingsPage() {
 
   const departments = await fetchDepartment();
-  const leaveTypes = await fetchLeaveType();
+
 
   return (
 <div className="flex space-x-8">
       <div>
-      <CreateLeaveTypeForm />
+      <CreateDeptForm />
       </div>
       <div>
       <Card className="xl:col-span-2 w-[650px]">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center justify-between w-full">
                   <div className="grid gap-2">
-                    <CardTitle>Leave Types</CardTitle>
-                    <CardDescription>Your list of leave types.</CardDescription>
+                    <CardTitle>Departments</CardTitle>
+                    <CardDescription>Your list of departments.</CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -50,21 +48,20 @@ export default async function SettingsProfilePage() {
                       </TableHead>
                     </TableRow>
                   </TableHeader>
-                  {leaveTypes
+                  {departments
+                    .reverse()
                     .slice(0, 5) // Limit to the last 5 records
-                    .map(leaveType => (
-                      <TableBody key={leaveType.id}>
+                    .map(department => (
+                      <TableBody key={department.id}>
                         <TableRow>
                           <TableCell className="font-medium">
-                            <div className="font-medium">
-                              <Badge>{leaveType.name}</Badge>
-         
-                              </div>
+                            
+                            <div className="font-medium"><Badge>{department.name}</Badge></div>
                           </TableCell>
-                          <TableCell>{leaveType.description}</TableCell>
+                          <TableCell>{department.description}</TableCell>
                           <TableCell>
                             <Badge className="text-xs" variant="outline">
-                              {formatDate(new Date(leaveType.createdAt).toISOString())}
+                              {formatDate(new Date(department.createdAt).toISOString())}
                             </Badge>
                           </TableCell>
                           <TableCell>
