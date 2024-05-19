@@ -1,13 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreateDeptForm } from "../_components/create-dept"
 import { CreateLeaveTypeForm } from "../_components/create-leave-type"
-import { fetchDepartment } from "../_data/fetch-department";
 import { fetchLeaveType } from "../_data/fetch-leave-type";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { BadgeEuro, MoreHorizontal } from "lucide-react";
+import { Metadata } from "next";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -17,10 +16,13 @@ function formatDate(dateString: string): string {
   return `${month}-${day}-${year}`;
 }
 
+export const metadata: Metadata = {
+  title: "Settings",
+  description: "Advanced form example using react-hook-form and Zod.",
+}
 
 export default async function SettingsProfilePage() {
 
-  const departments = await fetchDepartment();
   const leaveTypes = await fetchLeaveType();
 
   return (
@@ -51,7 +53,6 @@ export default async function SettingsProfilePage() {
                     </TableRow>
                   </TableHeader>
                   {leaveTypes
-                    .slice(0, 5) // Limit to the last 5 records
                     .map(leaveType => (
                       <TableBody key={leaveType.id}>
                         <TableRow>
@@ -61,7 +62,12 @@ export default async function SettingsProfilePage() {
          
                               </div>
                           </TableCell>
-                          <TableCell>{leaveType.description}</TableCell>
+                          <TableCell>
+                            <Badge variant='secondary'>
+                            {leaveType.description}
+                            </Badge>
+                   
+                            </TableCell>
                           <TableCell>
                             <Badge className="text-xs" variant="outline">
                               {formatDate(new Date(leaveType.createdAt).toISOString())}

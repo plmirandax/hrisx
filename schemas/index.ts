@@ -1,6 +1,6 @@
 import * as z from "zod";
-import { Months, Periods, UserRole } from "@prisma/client";
-import { User } from "lucide-react";
+import { Months, Periods, Statuses, UserRole } from "@prisma/client";
+
 
 export const SettingsSchema = z.object({
   name: z.optional(z.string()),
@@ -106,4 +106,8 @@ export const UploadPayslipSchema = z.object({
   ]),
   periods: z.enum([Periods.FirstHalf, Periods.SecondHalf]),
   userId: z.string()
+})
+
+export const ApproveLeaveSchema = z.object({
+  status: z.enum([Statuses.Approved, Statuses.Declined])
 })

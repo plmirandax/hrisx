@@ -1,12 +1,7 @@
-import { Metadata } from "next"
+
 import { Separator } from "@/components/ui/separator"
 import { SidebarNav } from "./components/sidebar-nav"
-import { ThemeProvider } from "@/components/theme-provider"
 
-export const metadata: Metadata = {
-  title: "Settings",
-  description: "Advanced form example using react-hook-form and Zod.",
-}
 
 const sidebarNavItems = [
   {
@@ -46,7 +41,7 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
-      <div className="hidden space-y-4 p-10 pb-16 md:block mt-[-30px]">
+      <div className="space-y-4 p-10 pb-16 md:block mt-[-30px]">
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground">
@@ -58,14 +53,8 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <aside className="-mx-4 lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
           <div className="flex-1 lg:max-w-2xl">{children}</div>
-          </ThemeProvider>
+         
         </div>
       </div>
     </>

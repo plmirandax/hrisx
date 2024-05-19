@@ -94,7 +94,7 @@ export function Header (){
             </div>
           </form>
           <div className='mb-2 mr-2'>
-            <ModeToggle />
+           {/*  <ModeToggle /> */}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

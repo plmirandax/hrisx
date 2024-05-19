@@ -14,7 +14,7 @@ const FirstSection = () => {
                     transition={{ duration: 0.5 }}
                     className="flex flex-col items-center justify-center min-h-[20vh]"
                 >
-                    <h1 className="dark:text-white text-black mb-4 text-4xl sm:text-5xl lg:text-8xl lg:leading-normal font-extrabold">
+                    <h1 className="mb-4 text-4xl sm:text-5xl lg:text-8xl lg:leading-normal font-extrabold">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700">
                             RD REALTY
                         </span>
