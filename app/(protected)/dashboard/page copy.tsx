@@ -1,36 +1,10 @@
 import Link from "next/link";
-import {
-  Activity,
-  ArrowUpRight,
-  CheckCheckIcon,
-  DollarSignIcon,
-  Hourglass,
-  MoreHorizontal,
-  User,
-} from "lucide-react";
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Activity, ArrowUpRight, CheckCheckIcon, DollarSignIcon, Hourglass, MoreHorizontal, User } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from "@/components/ui/table";
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { fetchLeaveData } from "./_data/fetchdata";

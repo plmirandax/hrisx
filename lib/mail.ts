@@ -35,14 +35,14 @@ export const sendPasswordResetEmail = async (
 
 export const sendLeaveNotif = async (
   email: string,
-  token: string,
+  leaveType: string,
 ) => {
 
   await resend.emails.send({
-    from: "info@rdhardware.net",
+    from: "leave-notification@rdhardware.net",
     to: email,
-    subject: "Reset your password",
-    html: `<p>Have sent a leave application.</p>
+    subject: "Leave Application",
+    html: `<p>Hey! ${email} Have sent a ${leaveType} application.</p>
     <p>This is an auto generated email. Please do not reply.</p>`
   });
 };
@@ -59,5 +59,20 @@ export const sendVerificationEmail = async (
     subject: "Confirm your email",
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>
     <p>This is an auto generated email. Please do not reply.</p>`
+  });
+};
+
+export const sendUploadNotif = async (
+  email: string,
+  payslipFile: string,
+  months: string,
+  periods: string,
+) => {
+  await resend.emails.send({
+    from: "payslip@rdhardware.net",
+    to: email,
+    subject: "Your Payslip",
+    html: `<p>Your payslip for the ${periods} of ${months} has been uploaded. Click <a href="${payslipFile}">here</a> to view it.</p>
+           <p>This is an auto-generated email. Please do not reply.</p>`
   });
 };

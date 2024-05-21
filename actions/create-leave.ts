@@ -6,8 +6,9 @@ import * as z from "zod";
 import { prisma } from "@/lib/db";
 import { CreateLeaveSchema, CreateLeaveTypeSchema, RegisterSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";
-import { sendLeaveNotif } from "@/lib/mail";
+import { sendLeaveNotif, sendUploadNotif } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/tokens";
+import { getEmailByApproverId, getEmailByUserId } from "@/data/user";
 
 
 export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => {
@@ -30,6 +31,12 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
       approverId
     },
   });
+
+      // Retrieve the email associated with the given userId
+      const email = await getEmailByApproverId(approverId);
+
+      // Send email notification with the payslip URL
+      await sendLeaveNotif(email, leaveType);
 
   revalidatePath('/dashboard');
   return { success: "Leave application successfully submitted!" };

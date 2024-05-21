@@ -1,36 +1,10 @@
 import Link from "next/link";
-import {
-  Activity,
-  ArrowUpRight,
-  CheckCheckIcon,
-  DollarSignIcon,
-  Hourglass,
-  MoreHorizontal,
-  User,
-} from "lucide-react";
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Activity, ArrowUpRight, CheckCheckIcon, DollarSignIcon, Hourglass, MoreHorizontal, User } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from "@/components/ui/table";
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { fetchLeaveData } from "./_data/fetchdata";
@@ -43,8 +17,6 @@ import { fetchSubordinates } from "./_data/fetch-subordinates";
 import { UploadPayslipForm } from "./_components/payslip-upload";
 import { fetchLeaveDataUser } from "./_data/fetch-leave-data-user";
 import { fetchUserApprover } from "./_data/fetch-user-approver";
-import { DataTable } from "./leave/components/data-table";
-import { columns } from "./leave/components/columns";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -136,21 +108,12 @@ export default async function Dashboard() {
         </div>
         {(isAdmin || isPMD || isApprover) && (
           <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-              <div className="w-[600px]">
-              <Card>
-                <CardContent className="mt-8">
-                <DataTable  data={leaves} columns={columns} />
-                </CardContent>
-              </Card>
-             
-              </div>
-            
-            <Card x-chunk="dashboard-01-chunk-5">
-              <CardHeader>
+            <Card className="xl:col-span-2">
+              <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center justify-between w-full">
                   <div className="grid gap-2">
-                    <CardTitle>Payslip History</CardTitle>
-                    <CardDescription>Your payslip history.</CardDescription>
+                    <CardTitle>Pending Approval Leave Transactions</CardTitle>
+                    <CardDescription>Your for approval leave transactions.</CardDescription>
                   </div>
                   <Button asChild size="sm" className="ml-auto mr-4">
                     <Link href="/dashboard/leave">
@@ -160,20 +123,83 @@ export default async function Dashboard() {
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent className="grid gap-8">
-                <div className="flex items-center gap-4">
-                  <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                    <AvatarFallback>OM</AvatarFallback>
-                  </Avatar>
-                  <div className="grid gap-1">
-                    <p className="text-sm font-medium leading-none">Olivia Martin</p>
-                    <p className="text-sm text-muted-foreground">olivia.martin@email.com</p>
-                  </div>
-                  <div className="ml-auto font-medium">+$1,999.00</div>
-                </div>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="hidden w-[50px] sm:table-cell">Image</TableHead>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Leave Type</TableHead>
+                      <TableHead className="hidden md:table-cell">Start Date</TableHead>
+                      <TableHead className="hidden md:table-cell">End Date</TableHead>
+                      <TableHead className="hidden md:table-cell">Reason</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead><span className="sr-only">Actions</span></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  {leaves
+                    .filter(leave => leave.status === 'Pending')
+                    .reverse()
+                    .slice(0, 5) // Limit to the last 5 records
+                    .map(leave => (
+                      <TableBody key={leave.id}>
+                        <TableRow>
+                          <TableCell className="hidden sm:table-cell w-[50px]">
+                            {leave.user.image ? (
+                              <Image
+                                alt="User Image"
+                                className="aspect-square rounded-md object-cover"
+                                height="30"
+                                src={leave.user.image}
+                                width="30"
+                              />
+                            ) : (
+                              <Avatar className="aspect-square rounded-md object-cover">
+                                <AvatarFallback>
+                                  <User className="h-4 w-4" />
+                                </AvatarFallback>
+                              </Avatar>
+                            )}
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            <div className="font-medium">{leave.user.firstName} {leave.user.lastName}</div>
+                            <div className="hidden text-sm text-muted-foreground md:inline">{leave.user.email}</div>
+                          </TableCell>
+                          <TableCell><Badge variant='secondary'>{leave.leaveType}</Badge></TableCell>
+                          <TableCell>
+                            <Badge className="text-xs" variant="outline">{formatDate(leave.startDate)}</Badge>
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            <Badge className="text-xs" variant="outline">{formatDate(leave.endDate)}</Badge>
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell">{leave.reason}</TableCell>
+                          <TableCell className="hidden md:table-cell"><Badge>{leave.status}</Badge></TableCell>
+                          <TableCell>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  aria-haspopup="true"
+                                  size="icon"
+                                  variant="ghost"
+                                >
+                                  <MoreHorizontal className="h-4 w-4" />
+                                  <span className="sr-only">Toggle menu</span>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuItem>Edit</DropdownMenuItem>
+                                <DropdownMenuItem>Delete</DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    ))}
+                </Table>
               </CardContent>
             </Card>
+            
             <Card x-chunk="dashboard-01-chunk-5">
               <CardHeader>
                 <div className="flex flex-row items-center justify-between w-full">
@@ -311,49 +337,6 @@ export default async function Dashboard() {
                 </Table>
               </CardContent>
             </Card>
-            {/*
-            <Card x-chunk="dashboard-01-chunk-5">
-              <CardHeader>
-                <div className="flex flex-row items-center justify-between w-full">
-                  <div className="grid gap-2">
-                    <CardTitle>Approver</CardTitle>
-                    <CardDescription>Your approvers.</CardDescription>
-                  </div>
-                  <Button asChild size="sm" className="ml-auto mr-4">
-                    <Link href="/dashboard/employee-management">
-                      View All
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="grid gap-8">
-                {approvers?.map((approver, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    {approver.image ? (
-                      <Image
-                        alt="User Image"
-                        className="aspect-square rounded-md object-cover"
-                        height="30"
-                        src={approver.image}
-                        width="30"
-                      />
-                    ) : (
-                      <Avatar className="aspect-square rounded-md object-cover">
-                        <AvatarFallback>
-                          <User className="h-4 w-4" />
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
-                    <div className="grid gap-1">
-                      <p className="text-sm font-semibold leading-none">{approver.firstName} {approver.lastName}</p>
-                      <p className="text-sm text-muted-foreground">{approver.email}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-              */}
           </>
         )}
         </div>
