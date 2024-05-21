@@ -7,14 +7,14 @@ import { toast } from 'sonner';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import axios from 'axios'; // Import Axios
 
-export default function LeavePage() {
+export default function ApprovedLeavePage() {
   const [leaves, setLeaves] = useState([]);
   const user = useCurrentUser();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.post('/api/fetch-leaves-pending', { userId: user?.id }); // THis get's the leave requests of the logged in user, change to approverId if you want to get the for approval of leave requests.
+        const response = await axios.post('/api/fetch-leaves-approved', { userId: user?.id }); // THis get's the leave requests of the logged in user, change to approverId if you want to get the for approval of leave requests.
   
         if (!response.data) {
           throw new Error('Failed to fetch leave data');
@@ -35,9 +35,9 @@ export default function LeavePage() {
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 flex flex-col p-4">
         <div className="flex flex-col space-y-5">
-          <h2 className="text-2xl font-bold tracking-tight">Your pending leave requests.</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Approved Leave Requests History</h2>
           <p className="text-muted-foreground mt-[-4px]">
-            This is where you can manage your pending leave requests.
+            This is where you can manage your approved leave requests.
           </p>
         </div>
         <div className="flex-1 overflow-auto">

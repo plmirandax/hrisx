@@ -1,44 +1,30 @@
 "use server";
 
 import * as z from "zod";
-import bcrypt from "bcryptjs";
-
-import { update } from "@/auth";
 import { prisma } from "@/lib/db";
-import { SettingsSchema } from "@/schemas";
-import { getUserById } from "@/data/user";
+import { ApproveLeaveSchema } from "@/schemas";
 import { currentUser } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
-export const ApproveLeaveRequest = async (
-  values: z.infer<typeof SettingsSchema>
-) => {
+export const ApproveLeaveRequest = async (values: z.infer<typeof ApproveLeaveSchema> & { id: string }) => {
   const user = await currentUser();
 
   if (!user) {
-    return { error: "Unauthorized" }
+    return { error: "Unauthorized" };
   }
 
-  const dbUser = await getUserById(user.id);
+  try {
+    const ApprovedLeave = await prisma.leave.update({
+      where: { id: values.id }, // Ensure you're updating the leave by its ID
+      data: {
+        status: values.status,
+        approverRemarks: values.approverRemarks,
+      },
+    });
 
-  if (!dbUser) {
-    return { error: "Unauthorized" }
+    revalidatePath('/dashboard/leave')
+    return { success: "Updated successfully!" };
+  } catch (error) {
+    return { error: "An error occurred while updating the leave request." };
   }
-
-  const updatedUser = await prisma.user.update({
-    where: { id: dbUser.id },
-    data: {
-      ...values,
-    }
-  });
-
-  update({
-    user: {
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      email: updatedUser.email,
-      isTwoFactorEnabled: updatedUser.isTwoFactorEnabled,
-    }
-  });
-
-  return { success: "Updated successfully!" }
-}
+};

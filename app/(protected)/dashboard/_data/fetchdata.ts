@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/db";
 
 
-export const fetchLeaveData = async (approverId: string) => {
+export const fetchLeaveDataApprover = async (approverId: string) => {
   try {
     const leaveData = await prisma.leave.findMany({
       where: { approverId },

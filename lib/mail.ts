@@ -36,13 +36,14 @@ export const sendPasswordResetEmail = async (
 export const sendLeaveNotif = async (
   email: string,
   leaveType: string,
+  firstName: string | null,
 ) => {
 
   await resend.emails.send({
     from: "leave-notification@rdhardware.net",
     to: email,
     subject: "Leave Application",
-    html: `<p>Hey! ${email} Have sent a ${leaveType} application.</p>
+    html: `<p>Hey! ${firstName} have sent a ${leaveType} application.</p>
     <p>This is an auto generated email. Please do not reply.</p>`
   });
 };

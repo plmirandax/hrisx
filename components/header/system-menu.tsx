@@ -14,7 +14,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { CalendarCheck, File, FileTextIcon, ListChecks, Settings, Users2Icon } from "lucide-react"
+import { CalendarCheck, FileTextIcon, Settings, Users2Icon } from "lucide-react"
 import { FaTasks } from "react-icons/fa"
 import { useCurrentUser } from "@/hooks/use-current-user"
 
@@ -26,7 +26,7 @@ const components: { title: string; href: string; description: string }[] = [
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
-    title: "Payslip Reports 📈",
+    title: "Payslip History 📈",
     href: "/dashboard/payslip/reports",
     description:
       "For sighted users to preview content available behind a link.",
@@ -40,6 +40,7 @@ export function SystemMenu() {
   const isAdmin = user?.role === 'Administrator';
   const isUser = user?.role === 'User';
   const isPMD = user?.role === 'PMD';
+  const isApprover = user?.role === 'Approver';
 
   return (
     <NavigationMenu>
@@ -47,13 +48,17 @@ export function SystemMenu() {
         <NavigationMenuItem>
           <NavigationMenuTrigger><CalendarCheck className="h-4 w-4 mr-2"/>Leave Management</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <ListItem href="/dashboard/leave" title="Leave Dashboard 📅">
-                Re-usable components built using Radix UI and Tailwind CSS.
+            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.80fr_1fr]">
+              <ListItem href="/dashboard/leave" title="My Pending Leaves📅">
               </ListItem>
-              <ListItem href="/dashboard/leave/reports" title="Leave Reports 📈">
-                How to install dependencies and structure your app.
+              <ListItem href="/dashboard/leave/approved-leaves" title="Approved Leaves History📅">
               </ListItem>
+              <ListItem href="/dashboard/leave/declined-leaves" title="Declined Leave History 📅">
+              </ListItem>
+              {(isPMD || isApprover || isAdmin) && (
+              <ListItem href="/dashboard/leave/approver" title="For Approval">
+              </ListItem>
+              )}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>

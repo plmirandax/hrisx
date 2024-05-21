@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, ArrowUpRight, CheckCheckIcon, DollarSignIcon, Hourglass, MoreHorizontal, User } from "lucide-react";
+import { Activity, ArrowUpRight, CheckCheckIcon, DollarSignIcon, Hourglass, MoreHorizontal, StopCircle, StopCircleIcon, Trash, User, XIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from "@/components/ui/table";
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
-import { fetchLeaveData } from "./_data/fetchdata";
+import { fetchLeaveDataApprover } from "./_data/fetchdata";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import Footer from "@/components/footer/footer";
@@ -44,15 +44,15 @@ export default async function Dashboard() {
 
   const subordinates = await fetchSubordinates(user.user.id);
   const approvers = await fetchUserApprover(user.user.id);
-  const leaves = await fetchLeaveData(user.user.id);
+  const leaves = await fetchLeaveDataApprover(user.user.id);
   const leavesUser = await fetchLeaveDataUser(user.user.id);
-  const pendingLeaves = leaves.filter(leave => leave.status === 'Pending');
+  const pendingLeaves = leavesUser.filter(leave => leave.status === 'Pending');
   const totalPendingLeaves = pendingLeaves.length;
-  const approvedLeaves = leaves.filter(leave => leave.status === 'Approved');
+  const approvedLeaves = leavesUser.filter(leave => leave.status === 'Approved');
   const totalApprovedLeaves = approvedLeaves.length;
-  const declinedLeaves = leaves.filter(leave => leave.status === 'Declined');
+  const declinedLeaves = leavesUser.filter(leave => leave.status === 'Declined');
   const totalDeclinedLeaves = declinedLeaves.length;
-  const totalLeaves = leaves.length;
+  const totalLeaves = leavesUser.length;
 
   return (
     <div className="flex flex-1 min-h-screen w-full flex-col">
@@ -90,7 +90,7 @@ export default async function Dashboard() {
           <Card x-chunk="dashboard-01-chunk-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Declined Leaves</CardTitle>
-              <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
+              <Trash className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold mt-3">{totalDeclinedLeaves}</div>
@@ -116,7 +116,7 @@ export default async function Dashboard() {
                     <CardDescription>Your for approval leave transactions.</CardDescription>
                   </div>
                   <Button asChild size="sm" className="ml-auto mr-4">
-                    <Link href="/dashboard/leave">
+                    <Link href="/dashboard/leave/approver">
                       View All
                       <ArrowUpRight className="h-4 w-4" />
                     </Link>
@@ -174,32 +174,13 @@ export default async function Dashboard() {
                           </TableCell>
                           <TableCell className="hidden md:table-cell">{leave.reason}</TableCell>
                           <TableCell className="hidden md:table-cell"><Badge>{leave.status}</Badge></TableCell>
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button
-                                  aria-haspopup="true"
-                                  size="icon"
-                                  variant="ghost"
-                                >
-                                  <MoreHorizontal className="h-4 w-4" />
-                                  <span className="sr-only">Toggle menu</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem>Edit</DropdownMenuItem>
-                                <DropdownMenuItem>Delete</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
                         </TableRow>
                       </TableBody>
                     ))}
                 </Table>
               </CardContent>
             </Card>
-            
+                    
             <Card x-chunk="dashboard-01-chunk-5">
               <CardHeader>
                 <div className="flex flex-row items-center justify-between w-full">
@@ -312,25 +293,6 @@ export default async function Dashboard() {
                           </TableCell>
                           <TableCell className="hidden md:table-cell">{leave.reason}</TableCell>
                           <TableCell className="hidden md:table-cell"><Badge>{leave.status}</Badge></TableCell>
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button
-                                  aria-haspopup="true"
-                                  size="icon"
-                                  variant="ghost"
-                                >
-                                  <MoreHorizontal className="h-4 w-4" />
-                                  <span className="sr-only">Toggle menu</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem>Edit</DropdownMenuItem>
-                                <DropdownMenuItem>Delete</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
                         </TableRow>
                       </TableBody>
                     ))}

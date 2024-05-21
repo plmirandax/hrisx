@@ -23,3 +23,5 @@ export const fetchLeaveDataUser = async (userId: string) => {
     return [];
   }
 };
+
+export type UserLeaveData = Awaited<ReturnType<typeof fetchLeaveDataUser>>;

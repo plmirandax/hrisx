@@ -1,15 +1,11 @@
 "use server";
 
 import * as z from "zod";
-
-
 import { prisma } from "@/lib/db";
-import { CreateLeaveSchema, CreateLeaveTypeSchema, RegisterSchema } from "@/schemas";
+import { CreateLeaveSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";
-import { sendLeaveNotif, sendUploadNotif } from "@/lib/mail";
-import { generateVerificationToken } from "@/lib/tokens";
-import { getEmailByApproverId, getEmailByUserId } from "@/data/user";
-
+import { sendLeaveNotif } from "@/lib/mail"; // Adjust the import path as needed
+import { getEmailByApproverId, getEmailByUserId, getUserById } from "@/data/user"; // Adjust the import path as needed
 
 export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => {
   const validatedFields = CreateLeaveSchema.safeParse(values);
@@ -20,7 +16,7 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
 
   const { startDate, endDate, leaveType, reason, approverId, userId } = validatedFields.data;
 
-
+  // Create leave record
   await prisma.leave.create({
     data: {
       startDate,
@@ -32,13 +28,15 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
     },
   });
 
-      // Retrieve the email associated with the given userId
-      const email = await getEmailByApproverId(approverId);
+  // Retrieve the email associated with the given approverId
+  const email = await getEmailByApproverId(approverId);
+  const firstName = await getEmailByUserId(userId)
 
-      // Send email notification with the payslip URL
-      await sendLeaveNotif(email, leaveType);
+  // Send email notification to the approver
+  await sendLeaveNotif(email, leaveType, firstName);
 
+  // Revalidate the path
   revalidatePath('/dashboard');
-  return { success: "Leave application successfully submitted!" };
 
+  return { success: "Leave application successfully submitted!" };
 };
