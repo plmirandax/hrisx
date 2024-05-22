@@ -12,7 +12,7 @@ export async function GET() {
             firstName: true,
             lastName: true
           },
-          where: { role: 'Approver' }
+          where: { role: 'Approver' || 'PMD'}
     });
 
     // Return the fetched properties
