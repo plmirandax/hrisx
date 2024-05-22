@@ -69,6 +69,9 @@ export const RegisterSchema = z.object({
   address: z.string().optional(),
   contactNo: z.string().optional(),
   approverId: z.string(),
+  department: z.string().min(1, {
+    message: "Department is required."
+  }),
   role: z.enum([UserRole.Administrator, UserRole.User, UserRole.Approver]).optional(),
 });
 
@@ -94,7 +97,7 @@ export const CreateLeaveSchema = z.object({
   }),
   leaveType: z.string(),
   approverId: z.string(),
-  userId: z.string()
+  userId: z.string(),
 })
 
 export const UploadPayslipSchema = z.object({

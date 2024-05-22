@@ -50,13 +50,17 @@ export function SystemMenu() {
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.80fr_1fr]">
               <ListItem href="/dashboard/leave" title="My Pending Leaves📅">
+              Re-usable components built using Radix UI and Tailwind CSS.
               </ListItem>
               <ListItem href="/dashboard/leave/approved-leaves" title="Approved Leaves History📅">
+              Re-usable components built using Radix UI and Tailwind CSS.
               </ListItem>
               <ListItem href="/dashboard/leave/declined-leaves" title="Declined Leave History 📅">
+              Re-usable components built using Radix UI and Tailwind CSS.
               </ListItem>
               {(isPMD || isApprover || isAdmin) && (
               <ListItem href="/dashboard/leave/approver" title="For Approval">
+                Re-usable components built using Radix UI and Tailwind CSS.
               </ListItem>
               )}
             </ul>

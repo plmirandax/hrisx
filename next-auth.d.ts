@@ -6,6 +6,7 @@ export type ExtendedUser = DefaultSession["user"] & {
   firstName: string;
   lastName: string;
   approverId: string;
+  pmdId: string;
   deptId: string;
   role: UserRole;
   isTwoFactorEnabled: boolean;

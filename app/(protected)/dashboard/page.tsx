@@ -112,8 +112,8 @@ export default async function Dashboard() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center justify-between w-full">
                   <div className="grid gap-2">
-                    <CardTitle>Pending Approval Leave Transactions</CardTitle>
-                    <CardDescription>Your for approval leave transactions.</CardDescription>
+                    <CardTitle>For Your Approval Leave Requests.</CardTitle>
+                    <CardDescription>Your for approval leave requests.</CardDescription>
                   </div>
                   <Button asChild size="sm" className="ml-auto mr-4">
                     <Link href="/dashboard/leave/approver">
@@ -180,59 +180,13 @@ export default async function Dashboard() {
                 </Table>
               </CardContent>
             </Card>
-                    
-            <Card x-chunk="dashboard-01-chunk-5">
-              <CardHeader>
-                <div className="flex flex-row items-center justify-between w-full">
-                  <div className="grid gap-2">
-                    <CardTitle>Subordinates</CardTitle>
-                    <CardDescription>Your subordinates.</CardDescription>
-                  </div>
-                  <Button asChild size="sm" className="ml-auto mr-4">
-                    <Link href="/dashboard/employee-management">
-                      View All
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="grid gap-8">
-                {subordinates?.map((subordinate, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    {subordinate.image ? (
-                      <Image
-                        alt="User Image"
-                        className="aspect-square rounded-md object-cover"
-                        height="30"
-                        src={subordinate.image}
-                        width="30"
-                      />
-                    ) : (
-                      <Avatar className="aspect-square rounded-md object-cover">
-                        <AvatarFallback>
-                          <User className="h-4 w-4" />
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
-                    <div className="grid gap-1">
-                      <p className="text-sm font-semibold leading-none">{subordinate.firstName} {subordinate.lastName}</p>
-                      <p className="text-sm text-muted-foreground">{subordinate.email}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-        )}
-        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-        {(isUser || isApprover || isPMD) && (
-          <>
-          <Card className="xl:col-span-2 w-[905px]">
+
+            <Card className="xl:col-span-2 w-[905px]">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center justify-between w-full">
                   <div className="grid gap-2">
-                    <CardTitle>Pending Leave Transactions</CardTitle>
-                    <CardDescription>Your pending leave transactions.</CardDescription>
+                    <CardTitle>Your Pending Leave Requests.</CardTitle>
+                    <CardDescription>Your pending leave requests.</CardDescription>
                   </div>
                   <Button asChild size="sm" className="ml-auto mr-4">
                     <Link href="/dashboard/leave">
@@ -297,6 +251,52 @@ export default async function Dashboard() {
                       </TableBody>
                     ))}
                 </Table>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+        {(isUser || isApprover || isPMD || isAdmin) && (
+          <>
+          <Card x-chunk="dashboard-01-chunk-5">
+              <CardHeader>
+                <div className="flex flex-row items-center justify-between w-full">
+                  <div className="grid gap-2">
+                    <CardTitle>Subordinates</CardTitle>
+                    <CardDescription>Your subordinates.</CardDescription>
+                  </div>
+                  <Button asChild size="sm" className="ml-auto mr-4">
+                    <Link href="/dashboard/employee-management">
+                      View All
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="grid gap-8">
+                {subordinates?.map((subordinate, index) => (
+                  <div key={index} className="flex items-center gap-4">
+                    {subordinate.image ? (
+                      <Image
+                        alt="User Image"
+                        className="aspect-square rounded-md object-cover"
+                        height="30"
+                        src={subordinate.image}
+                        width="30"
+                      />
+                    ) : (
+                      <Avatar className="aspect-square rounded-md object-cover">
+                        <AvatarFallback>
+                          <User className="h-4 w-4" />
+                        </AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div className="grid gap-1">
+                      <p className="text-sm font-semibold leading-none">{subordinate.firstName} {subordinate.lastName}</p>
+                      <p className="text-sm text-muted-foreground">{subordinate.email}</p>
+                    </div>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </>

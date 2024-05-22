@@ -6,15 +6,15 @@ const prisma = new PrismaClient();
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { approverId } = body; // Extract userId from the request body
+    const { userId } = body; // Extract userId from the request body
 
-    if (!approverId) {
+    if (!userId) {
       throw new Error('userId is missing in the request');
     }
 
     // Fetch leaves associated with the userId
     const leaves = await prisma.leave.findMany({
-      where: { approverId, status: 'Pending' },
+      where: { approverId: userId, status: 'Pending' },
       include: {
         user: {
           select: {

@@ -46,12 +46,33 @@ type Approvers = {
   lastName: string;
 };
 
+type Department = {
+  id: string;
+  name: string;
+}
+
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const [approvers, setApprovers] = useState<Approvers[]>([]);
+  const [pmdApprovers, setPMD] = useState<Approvers[]>([]);
+  const [departments, setDepartment] = useState<Department[]>([]);
   const user = useCurrentUser();
+
+  useEffect(() => {
+    fetch('/api/fetch-pmd')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => setPMD(data.pmdApprovers))
+      .catch(() =>
+        toast.error('An error occurred while fetching approvers. Please try again.')
+      );
+  }, []);
 
   useEffect(() => {
     fetch('/api/fetch-approver')
@@ -67,6 +88,21 @@ export const RegisterForm = () => {
       );
   }, []);
 
+
+  useEffect(() => {
+    fetch('/api/fetch-department')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => setDepartment(data.departments))
+      .catch(() =>
+        toast.error('An error occurred while fetching departments. Please try again.')
+      );
+  }, []);
+
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -78,6 +114,7 @@ export const RegisterForm = () => {
       address: "",
       role: undefined,
       approverId: "",
+      department: "",
     },
   });
 
@@ -185,6 +222,8 @@ export const RegisterForm = () => {
                   </FormItem>
                 )}
               />
+              
+
               <div className="flex w-full space-x-4">
                 <div className="w-1/2">
                 <FormField
@@ -219,6 +258,49 @@ export const RegisterForm = () => {
                   )}
                 />
                 </div>
+                <div className="w-1/2">
+                <FormField
+                  control={form.control}
+                  name="department"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold">Department</FormLabel>
+                      <FormControl>
+                        <Controller
+                          name="department"
+                          control={form.control}
+                          render={({ field }) => (
+                            <Select
+                              value={field.value}
+                              onValueChange={field.onChange}
+                              disabled={isPending}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select department..." />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  {departments.map((department) => (
+                                    <SelectItem key={department.id} value={department.name}>
+                                      {department.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          )}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                </div>
+                
+                
+              </div>
+
+              <div className="flex w-full space-x-4">
                 <div className="w-1/2">
                 <FormField
                   control={form.control}
@@ -257,9 +339,9 @@ export const RegisterForm = () => {
                   )}
                 />
                 </div>
-                
-                
               </div>
+
+
               <div className="flex w-full space-x-4">
                 <div className="w-1/2">
                 <FormField

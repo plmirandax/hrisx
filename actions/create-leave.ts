@@ -24,7 +24,7 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
       reason,
       leaveType,
       userId,
-      approverId
+      approverId,
     },
   });
 

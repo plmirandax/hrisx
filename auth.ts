@@ -69,6 +69,7 @@ export const {
         session.user.lastName = token.lastName as string;
         session.user.id = token.id as string;
         session.user.approverId = token.approverId as string;
+        session.user.pmdId = token.pmdId as string;
         session.user.email = token.email;
         session.user.isOAuth = token.isOAuth as boolean;
       }

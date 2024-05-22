@@ -42,6 +42,11 @@ enum PlsType {
   Leave
 }
 
+enum DayType {
+  HalfDay
+  WholeDay
+}
+
 enum Statuses {
   Approved
   Pending
@@ -100,6 +105,8 @@ model Leave {
   endDate     String
   reason      String
   approverRemarks String?
+  pmdRemarks  String?
+  dayType     DayType?
   status      Statuses @default(Pending)
   createdAt   DateTime @default(now())
   userId      String
