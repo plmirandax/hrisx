@@ -43,7 +43,6 @@ export default async function Dashboard() {
   }
 
   const subordinates = await fetchSubordinates(user.user.id);
-  const approvers = await fetchUserApprover(user.user.id);
   const leaves = await fetchLeaveDataApprover(user.user.id);
   const leavesUser = await fetchLeaveDataUser(user.user.id);
   const pendingLeaves = leavesUser.filter(leave => leave.status === 'Pending');
@@ -106,8 +105,8 @@ export default async function Dashboard() {
             </CardContent>
           </Card>
         </div>
-        {(isAdmin || isPMD || isApprover) && (
           <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+          {(isAdmin || isPMD || isApprover) && (
             <Card className="xl:col-span-2">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center justify-between w-full">
@@ -180,7 +179,7 @@ export default async function Dashboard() {
                 </Table>
               </CardContent>
             </Card>
-
+          )}
             <Card className="xl:col-span-2 w-[905px]">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center justify-between w-full">
@@ -254,9 +253,9 @@ export default async function Dashboard() {
               </CardContent>
             </Card>
           </div>
-        )}
+      
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-        {(isUser || isApprover || isPMD || isAdmin) && (
+        {( isUser || isApprover || isPMD || isAdmin) && (
           <>
           <Card x-chunk="dashboard-01-chunk-5">
               <CardHeader>

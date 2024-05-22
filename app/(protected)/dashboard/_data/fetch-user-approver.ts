@@ -4,7 +4,7 @@ export const fetchUserApprover = async (approverId: string) => {
   try {
     const approvers = await prisma.user.findMany({
       where: {
-        approverId
+         approverId
       }
     });
     return approvers;
