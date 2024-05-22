@@ -25,12 +25,6 @@ const components: { title: string; href: string; description: string }[] = [
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
-  {
-    title: "Payslip History 📈",
-    href: "/dashboard/payslip/reports",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
 ]
 
 export function SystemMenu() {
@@ -60,22 +54,6 @@ export function SystemMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger><FileTextIcon className="h-4 w-4 mr-2"/>Payslip Management</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
         {(isAdmin || isPMD) && (
         <NavigationMenuItem>
           <NavigationMenuTrigger><Users2Icon className="h-4 w-4 mr-2"/>Employee Management</NavigationMenuTrigger>
@@ -91,6 +69,13 @@ export function SystemMenu() {
           </NavigationMenuContent>
         </NavigationMenuItem>
           )}
+          <NavigationMenuItem>
+          <Link href="/dashboard/payslip" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <FileTextIcon className="h-4 w-4 mr-2"/>View Payslip
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
         <NavigationMenuItem>
           <Link href="/dashboard/kanban" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
