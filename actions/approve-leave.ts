@@ -15,14 +15,14 @@ export const ApproveLeaveRequest = async (values: z.infer<typeof ApproveLeaveSch
 
   try {
     const ApprovedLeave = await prisma.leave.update({
-      where: { id: values.id }, // Ensure you're updating the leave by its ID
+      where: { id: values.id }, 
       data: {
         status: values.status,
         approverRemarks: values.approverRemarks,
       },
     });
 
-    revalidatePath('/dashboard/leave')
+    revalidatePath('/dashboard/leave/approver')
     return { success: "Updated successfully!" };
   } catch (error) {
     return { error: "An error occurred while updating the leave request." };
