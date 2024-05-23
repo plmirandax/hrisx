@@ -46,19 +46,6 @@ const CellComponent = ({ row }: { row: RowData }) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const user = useCurrentUser();
-
-  if (!user) {
-    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
-  }
-
-  const isAdmin = user?.role === 'Administrator';
-  const isApprover = user?.role === 'Approver'
-  const isPMD = user?.role === 'PMD';
-
-  if (!isAdmin && !isPMD && !isApprover) {
-    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
-  }
 
   const form = useForm<z.infer<typeof ApprovePMDSchema>>({
     resolver: zodResolver(ApprovePMDSchema),
