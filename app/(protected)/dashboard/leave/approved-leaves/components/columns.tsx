@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { Statuses } from "@prisma/client";
 import { ApproveLeaveRequest } from "@/actions/approve-leave";
+import { Badge } from "@/components/ui/badge";
 
 type LeaveType = {
   id: string;
@@ -174,13 +175,73 @@ export const columns: ColumnDef<Leaves>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Approver Status" />
     ),
+    // Use a custom cell renderer to display the content as a badge
+    cell: ({ row }) => {
+      const status = row.original.status; // Accessing the status value from the row data
+  
+      // Determine badge color based on status
+      let badgeColor;
+      switch (status) {
+        case 'Pending':
+          badgeColor = 'warning';
+          break;
+        case 'Approved':
+          badgeColor = 'success';
+          break;
+        case 'Rejected':
+          badgeColor = 'danger';
+          break;
+        default:
+          badgeColor = 'primary';
+      }
+  
+      return (
+        <Badge color={badgeColor}>{status}</Badge>
+      );
+    }
   },
   {
     accessorKey: "approverRemarks",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Approver Remarks" />
+    ),
+  },
+  {
+    accessorKey: "pmdStatus",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="PMD Status" />
+    ),
+    // Use a custom cell renderer to display the content as a badge
+    cell: ({ row }) => {
+      const status = row.original.status; // Accessing the status value from the row data
+  
+      // Determine badge color based on status
+      let badgeColor;
+      switch (status) {
+        case 'Pending':
+          badgeColor = 'warning';
+          break;
+        case 'Approved':
+          badgeColor = 'success';
+          break;
+        case 'Rejected':
+          badgeColor = 'danger';
+          break;
+        default:
+          badgeColor = 'primary';
+      }
+  
+      return (
+        <Badge color={badgeColor}>{status}</Badge>
+      );
+    }
+  },
+  {
+    accessorKey: "pmdRemarks",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="PMD Remarks" />
     ),
   },
 ];

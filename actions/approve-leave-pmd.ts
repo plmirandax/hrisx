@@ -2,11 +2,11 @@
 
 import * as z from "zod";
 import { prisma } from "@/lib/db";
-import { ApproveLeaveSchema } from "@/schemas";
+import { ApproveLeaveSchema, ApprovePMDSchema } from "@/schemas";
 import { currentUser } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
-export const ApproveLeaveRequest = async (values: z.infer<typeof ApproveLeaveSchema> & { id: string }) => {
+export const ApprovePMDRequest = async (values: z.infer<typeof ApprovePMDSchema> & { id: string }) => {
   const user = await currentUser();
 
   if (!user) {
@@ -18,7 +18,6 @@ export const ApproveLeaveRequest = async (values: z.infer<typeof ApproveLeaveSch
       where: { id: values.id }, 
       data: {
         status: values.status,
-        approverRemarks: values.approverRemarks,
         pmdStatus: values.pmdStatus,
         pmdRemarks: values.pmdRemarks
       },

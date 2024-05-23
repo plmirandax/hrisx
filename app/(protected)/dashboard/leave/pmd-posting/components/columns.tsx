@@ -20,25 +20,20 @@ import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ApproveLeaveSchema } from "@/schemas";
+import { ApproveLeaveSchema, ApprovePMDSchema } from "@/schemas";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { Statuses } from "@prisma/client";
 import { ApproveLeaveRequest } from "@/actions/approve-leave";
 import { Badge } from "@/components/ui/badge";
-
-type LeaveType = {
-  id: string;
-  name: string;
-  description: string | null;
-  createdAt: Date;
-};
+import { ApprovePMDRequest } from "@/actions/approve-leave-pmd";
 
 type RowData = Row<Leaves>;
 const CellComponent = ({ row }: { row: RowData }) => {
   const leaves = row.original;
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLeaves, setSelectedLeaves] = useState<Leaves | null>(null);
+
 
   const handleOpenModal = () => {
     setSelectedLeaves(leaves);
@@ -52,42 +47,52 @@ const CellComponent = ({ row }: { row: RowData }) => {
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const [leaveTypes, setLeaveTypes] = useState<LeaveType[]>([]);
   const [isPending, startTransition] = useTransition();
   const user = useCurrentUser();
 
-  useEffect(() => {
-    fetch('/api/fetch-leave-type') // replace with your API route
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => setLeaveTypes(data.leaveTypes))
-      .catch(() => toast.error('An error occurred while fetching leave types. Please try again.'));
-  }, []);
+  if (!user) {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
 
-  const form = useForm<z.infer<typeof ApproveLeaveSchema>>({
-    resolver: zodResolver(ApproveLeaveSchema),
+  const isAdmin = user?.role === 'Administrator';
+  const isApprover = user?.role === 'Approver'
+  const isPMD = user?.role === 'PMD';
+
+  if (!isAdmin && !isPMD && !isApprover) {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
+
+  const form = useForm<z.infer<typeof ApprovePMDSchema>>({
+    resolver: zodResolver(ApprovePMDSchema),
     defaultValues: {
       status: undefined,
-      approverRemarks: "",
+      pmdStatus: undefined,
+      pmdRemarks: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof ApproveLeaveSchema>) => {
+  const onSubmit = (values: z.infer<typeof ApprovePMDSchema>) => {
     setError("");
     setSuccess("");
   
     // Check if selectedLeaves is not null and selectedLeaves.id is a string
     if (selectedLeaves?.id) {
       startTransition(() => {
-        ApproveLeaveRequest({ ...values, id: selectedLeaves.id }) // Include the leave ID in the request
+        // Determine the status based on pmdStatus
+        let newStatus: "Approved" | "Declined";
+  
+        if (values.pmdStatus === Statuses.Declined) {
+          newStatus = "Declined";
+        } else {
+          newStatus = "Approved"; // Default to "Approved" if pmdStatus is not "Declined"
+        }
+  
+        // Include the updated status in the request
+        ApprovePMDRequest({ ...values, id: selectedLeaves.id, status: newStatus })
           .then((data) => {
             setError(data.error);
             setSuccess(data.success);
-            
+  
             if (!data.error) {
               form.reset();
             }
@@ -125,10 +130,12 @@ const CellComponent = ({ row }: { row: RowData }) => {
           <DialogContent className="sm:max-w-[550px]">
             <CardTitle>Leave Details
               <CardDescription className="mb-4">Fill in the form below to update tenant details.</CardDescription>
-             
+
               <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+          {( isApprover || isAdmin || isPMD ) && ( 
             <div className="flex space-x-4">
+          
               <div className="w-1/2">
                 <div>
                 <FormLabel className="font-semibold">Name</FormLabel>
@@ -147,8 +154,10 @@ const CellComponent = ({ row }: { row: RowData }) => {
                               </SelectTrigger>
                             </Select>
               </div>
+              
             </div>
-
+            )}
+             {( isApprover || isAdmin || isPMD ) && ( 
             <div className="flex space-x-4 mt-4">
               <div className="w-1/2">
               <FormLabel className="font-semibold">Start Date</FormLabel>
@@ -159,6 +168,8 @@ const CellComponent = ({ row }: { row: RowData }) => {
                         <Input value={selectedLeaves?.endDate} readOnly />
               </div>
             </div>
+             )}
+  {( isApprover || isAdmin || isPMD ) && ( 
             <div className="mt-4 mb-4">
             <FormLabel className="font-semibold">Reason</FormLabel>
                       <Textarea
@@ -169,16 +180,30 @@ const CellComponent = ({ row }: { row: RowData }) => {
                         readOnly
                       />
             </div>
-            <div>
-            <FormField
+             )}
+            <div className="flex space-x-4">
+              <div className="w-1/2">
+              <FormLabel className="font-semibold">Approver Status</FormLabel>
+                        <Input value={selectedLeaves?.status} readOnly className="mt-2" />
+              </div>
+              
+              <div className="w-1/2">
+              <FormLabel className="font-semibold">Approver Remarks</FormLabel>
+                        <Input value={selectedLeaves?.approverRemarks} readOnly className="mt-2" />
+              </div>
+            </div>
+            
+            <div className="mt-4 mb-4">
+            {( isAdmin || isPMD ) && (
+              <FormField
                 control={form.control}
-                name="status"
+                name="pmdStatus"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold">Approver Status</FormLabel>
+                    <FormLabel className="font-semibold">PMD Status</FormLabel>
                     <FormControl>
                       <Controller
-                        name="status"
+                        name="pmdStatus"
                         control={form.control}
                         render={({ field }) => (
                           <Select
@@ -201,21 +226,22 @@ const CellComponent = ({ row }: { row: RowData }) => {
                   </FormItem>
                 )}
               />
+              )}
             </div>
-            
+            {( isAdmin || isPMD ) && (
             <div className="mt-4 mb-4">
               <FormField
                 control={form.control}
-                name="approverRemarks"
+                name="pmdRemarks"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Approver Remarks</FormLabel>
+                    <FormLabel className="font-semibold">PMD Remarks</FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
                         disabled={isPending}
                         placeholder="Enter approver remarks here..."
-                        className="h-[100px]"
+                        className="h-[70px]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -223,10 +249,11 @@ const CellComponent = ({ row }: { row: RowData }) => {
                 )}
               />
             </div>
+            )}
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button disabled={isPending} type="submit" className="w-full mt-4">
-              Submit Leave
+              Update Leave Request
             </Button>
           </form>
         </Form>
@@ -334,6 +361,12 @@ export const columns: ColumnDef<Leaves>[] = [
         <Badge color={badgeColor}>{status}</Badge>
       );
     }
+  },
+  {
+    accessorKey: "approverRemarks",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Approver Remarks" />
+    ),
   },
   {
     id: "actions",

@@ -1,12 +1,11 @@
 "use client";
 
 import * as z from "zod";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { CreateDepartmentSchema, UploadPayslipSchema } from "@/schemas";
-import { Input } from "@/components/ui/input";
+import { UploadPayslipSchema } from "@/schemas";
 import {
   Form,
   FormControl,
@@ -18,21 +17,37 @@ import {
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { createDepartment } from "@/actions/department-create";
-import { UploadPayslip } from "@/actions/upload-payslip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { PlusCircleIcon } from "lucide-react";
+import FileUpload from "@/components/upload-file";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Months, Periods } from "@prisma/client";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { PlusCircleIcon } from "lucide-react";
-import FileUpload from "@/components/upload-file";
+import { UploadPayslip } from "@/actions/upload-payslip";
 
 type Employees = {
   id: string;
   firstName: string;
   lastName: string;
-}
+};
 
 export const UploadPayslipForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -41,7 +56,7 @@ export const UploadPayslipForm = () => {
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    fetch('/api/fetch-employees')
+    fetch("/api/fetch-employees")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -49,9 +64,7 @@ export const UploadPayslipForm = () => {
         return response.json();
       })
       .then((data) => setEmployees(data.employees))
-      .catch(() =>
-        toast.error('An error occurred while fetching employees. Please try again.')
-      );
+      .catch(() => toast.error("An error occurred while fetching employees. Please try again."));
   }, []);
 
   const form = useForm<z.infer<typeof UploadPayslipSchema>>({
@@ -64,7 +77,7 @@ export const UploadPayslipForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof UploadPayslipSchema>) => {
+  const onSubmit = useCallback((values: z.infer<typeof UploadPayslipSchema>) => {
     setError("");
     setSuccess("");
 
@@ -73,7 +86,7 @@ export const UploadPayslipForm = () => {
         .then((data) => {
           setError(data.error);
           setSuccess(data.success);
-          
+
           if (!data.error) {
             form.reset();
           }
@@ -85,7 +98,7 @@ export const UploadPayslipForm = () => {
           }, 5000);
         });
     });
-  };
+  }, [form]);
 
   return (
     <Dialog>
@@ -95,7 +108,7 @@ export const UploadPayslipForm = () => {
           Upload Employee Payslip
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Employee Payslip Information</DialogTitle>
           <DialogDescription>
@@ -234,9 +247,32 @@ export const UploadPayslipForm = () => {
 
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button disabled={isPending} type="submit" className="w-full mt-4">
-              Upload Payslip
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button type="button" className="w-full mt-4">Upload Payslip</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will upload and email the payslip to the employee that you have selected.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="w-1/2">Cancel</AlertDialogCancel>
+                  <AlertDialogAction asChild>
+                    <Button
+                      type="submit"
+                      disabled={isPending}
+                      onClick={() => form.handleSubmit(onSubmit)()}
+                      className="w-1/2"
+                    >
+                      Confirm Upload
+                    </Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </form>
         </Form>
       </DialogContent>

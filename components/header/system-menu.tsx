@@ -42,13 +42,18 @@ export function SystemMenu() {
         <NavigationMenuItem>
           <NavigationMenuTrigger><CalendarCheck className="h-4 w-4 mr-2"/>Leave Management</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.80fr_1fr]">
-              <ListItem href="/dashboard/leave" title="Leave Page 🗓️">
-              Your pending, approved and declined leave requests.
+            <ul className="grid p-4 md:w-[200px] lg:w-[200px]">
+              <ListItem href="/dashboard/leave" title="My Leave Page 🗓️">
+           
               </ListItem>
               {(isPMD || isApprover || isAdmin) && (
-              <ListItem href="/dashboard/leave/approver" title="For Approval ✅ ❌">
-                Leave requests that need your approval.
+              <ListItem href="/dashboard/leave/approver" title="For Approval ✅">
+            
+              </ListItem>
+              )}
+              {(isPMD || isAdmin) && (
+              <ListItem href="/dashboard/leave/pmd-posting" title="PMD Approval ✅">
+             
               </ListItem>
               )}
             </ul>

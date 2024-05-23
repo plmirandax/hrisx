@@ -23,6 +23,9 @@ export async function POST(req: Request) {
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     // Return the fetched leaves data

@@ -96,6 +96,7 @@ model Payslip {
   periods     Periods
   userId      String
   user        User @relation("UserToPayslip",fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
 }
 
 model Leave {
@@ -104,10 +105,12 @@ model Leave {
   startDate   String
   endDate     String
   reason      String
+  numberOfDays String?
   approverRemarks String?
   pmdRemarks  String?
   dayType     DayType?
   status      Statuses @default(Pending)
+  pmdStatus   Statuses? @default(Pending)
   createdAt   DateTime @default(now())
   userId      String
   user        User @relation("UserToLeave", fields: [userId], references: [id])

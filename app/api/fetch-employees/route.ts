@@ -12,6 +12,9 @@ export async function GET() {
             firstName: true,
             lastName: true,
           },
+          orderBy: {
+            createdAt: 'desc',
+          },
     });
 
     // Return the fetched properties

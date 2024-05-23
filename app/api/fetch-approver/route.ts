@@ -21,10 +21,9 @@ export async function GET() {
       approvers,
     });
   } catch (error) {
-    console.error("Error during properties fetching:", error);
     return NextResponse.json({
       status: 'error',
-      message: 'An error occurred while fetching properties',
+      message: 'An error occurred while fetching approvers',
     }, { status: 500 });
   }
 }

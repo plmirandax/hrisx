@@ -115,5 +115,13 @@ export const ApproveLeaveSchema = z.object({
   status: z.enum([Statuses.Approved, Statuses.Declined]),
   approverRemarks: z.string().min(1, {
     message: "Approver Remarks is required."
-  })
+  }),
+  pmdStatus: z.enum([Statuses.Approved, Statuses.Declined]).optional(),
+  pmdRemarks: z.string().optional(),
+})
+
+export const ApprovePMDSchema = z.object({
+  pmdStatus: z.enum([Statuses.Approved, Statuses.Declined]),
+  status: z.enum([Statuses.Approved, Statuses.Declined]).optional(),
+  pmdRemarks: z.string().optional(),
 })
