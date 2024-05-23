@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { Row } from "@tanstack/react-table";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
@@ -18,13 +18,11 @@ import { Controller, useForm } from "react-hook-form";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ApproveLeaveSchema, ApprovePMDSchema } from "@/schemas";
+import { ApprovePMDSchema } from "@/schemas";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { Statuses } from "@prisma/client";
-import { ApproveLeaveRequest } from "@/actions/approve-leave";
 import { Badge } from "@/components/ui/badge";
 import { ApprovePMDRequest } from "@/actions/approve-leave-pmd";
 
@@ -133,7 +131,6 @@ const CellComponent = ({ row }: { row: RowData }) => {
 
               <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-          {( isApprover || isAdmin || isPMD ) && ( 
             <div className="flex space-x-4">
           
               <div className="w-1/2">
@@ -156,8 +153,6 @@ const CellComponent = ({ row }: { row: RowData }) => {
               </div>
               
             </div>
-            )}
-             {( isApprover || isAdmin || isPMD ) && ( 
             <div className="flex space-x-4 mt-4">
               <div className="w-1/2">
               <FormLabel className="font-semibold">Start Date</FormLabel>
@@ -168,8 +163,6 @@ const CellComponent = ({ row }: { row: RowData }) => {
                         <Input value={selectedLeaves?.endDate} readOnly />
               </div>
             </div>
-             )}
-  {( isApprover || isAdmin || isPMD ) && ( 
             <div className="mt-4 mb-4">
             <FormLabel className="font-semibold">Reason</FormLabel>
                       <Textarea
@@ -180,7 +173,6 @@ const CellComponent = ({ row }: { row: RowData }) => {
                         readOnly
                       />
             </div>
-             )}
             <div className="flex space-x-4">
               <div className="w-1/2">
               <FormLabel className="font-semibold">Approver Status</FormLabel>
@@ -194,7 +186,6 @@ const CellComponent = ({ row }: { row: RowData }) => {
             </div>
             
             <div className="mt-4 mb-4">
-            {( isAdmin || isPMD ) && (
               <FormField
                 control={form.control}
                 name="pmdStatus"
@@ -226,9 +217,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
                   </FormItem>
                 )}
               />
-              )}
             </div>
-            {( isAdmin || isPMD ) && (
             <div className="mt-4 mb-4">
               <FormField
                 control={form.control}
@@ -249,7 +238,6 @@ const CellComponent = ({ row }: { row: RowData }) => {
                 )}
               />
             </div>
-            )}
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button disabled={isPending} type="submit" className="w-full mt-4">
