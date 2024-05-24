@@ -128,36 +128,34 @@ const CellComponent = ({ row }: { row: RowData }) => {
              
               <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="flex flex-col space-y-4">
             <div className="flex space-x-4">
               <div className="w-1/2">
-                <div>
-                <FormLabel className="font-semibold">Name</FormLabel>
+                <FormLabel>Name</FormLabel>
                       <Input
                         value={`${selectedLeaves?.user.firstName || ''} ${selectedLeaves?.user.lastName || ''}`}
-                        disabled={isPending}
                         readOnly
                         className="mt-2"
                       />
-                </div>
               </div>
               <div className="w-1/2">
-              <FormLabel className="font-semibold">Leave Type</FormLabel>
-              <Input value={selectedLeaves?.leaveType} readOnly className="mt-2" />
+              <FormLabel>Leave Type</FormLabel>
+              <Input value={selectedLeaves?.leaveType} readOnly className="mt-2 font-xl" />
               </div>
             </div>
 
             <div className="flex space-x-4 mt-4">
               <div className="w-1/2">
-              <FormLabel className="font-semibold">Start Date</FormLabel>
+              <FormLabel>Start Date</FormLabel>
                         <Input value={selectedLeaves?.startDate} readOnly className="mt-2" />
               </div>
               <div className="w-1/2">
-              <FormLabel className="font-semibold">End Date</FormLabel>
+              <FormLabel>End Date</FormLabel>
                         <Input value={selectedLeaves?.endDate} readOnly className="mt-2" />
               </div>
             </div>
             <div className="mt-4 mb-4">
-            <FormLabel className="font-semibold">Reason</FormLabel>
+            <FormLabel>Reason</FormLabel>
                       <Textarea
                         value={selectedLeaves?.reason}
                         placeholder="Enter reason here..."
@@ -171,7 +169,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold">Approver Status</FormLabel>
+                    <FormLabel>Approver Status</FormLabel>
                     <FormControl>
                       <Controller
                         name="status"
@@ -218,6 +216,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
                   </FormItem>
                 )}
               />
+            </div>
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />

@@ -10,41 +10,41 @@ body,
  
 @layer base {
   :root {
-/* Name: custom color palette
+  /* Name: custom color palette
        Author: Ilias Ism
        URL: https://gradient.page */
 
     /* CSS: .bg-gradient { background: var(--gradient) } */
-    --gradient: #0052D4;
+    --gradient: linear-gradient(to top left,#007adf,#00ecbc);
 
-    --background: 230 65% 3.36%;
-    --foreground: 230 10% 97.1%;
+    --background: 220 65% 3.52%;
+    --foreground: 220 10% 97.2%;
 
-    --muted: 230 50% 12.6%;
-    --muted-foreground: 230 10% 54.2%;
+    --muted: 220 50% 13.2%;
+    --muted-foreground: 220 10% 54.4%;
 
-    --popover: 230 45% 5.46%;
-    --popover-foreground: 230 10% 97.1%;
+    --popover: 220 45% 5.72%;
+    --popover-foreground: 220 10% 97.2%;
 
-    --card: 230 45% 5.46%;
-    --card-foreground: 230 10% 97.1%;
+    --card: 220 45% 5.72%;
+    --card-foreground: 220 10% 97.2%;
 
-    --border: 230 50% 12.6%;
-    --input: 230 50% 12.6%;
+    --border: 220 50% 13.2%;
+    --input: 220 50% 13.2%;
 
-    --primary: 230 100% 42%;
-    --primary-foreground: 230 10% 97.1%;
+    --primary: 220 100% 44%;
+    --primary-foreground: 220 10% 97.2%;
 
-    --secondary: 230 50% 12.6%;
-    --secondary-foreground: 230 10% 97.1%;
+    --secondary: 220 50% 13.2%;
+    --secondary-foreground: 220 10% 97.2%;
 
-    --accent: 230 50% 12.6%;
-    --accent-foreground: 230 10% 97.1%;
+    --accent: 220 50% 13.2%;
+    --accent-foreground: 220 10% 97.2%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 230 10% 97.1%;
+    --destructive-foreground: 220 10% 97.2%;
 
-    --ring: 230 100% 42%;
+    --ring: 220 100% 44%;
  
     --radius: 0.5rem;
   }

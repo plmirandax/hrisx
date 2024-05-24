@@ -301,7 +301,7 @@ export const RegisterForm = () => {
               </div>
 
               <div className="flex w-full space-x-4">
-                <div className="w-1/2">
+                <div className="w-full">
                 <FormField
                   control={form.control}
                   name="approverId"
