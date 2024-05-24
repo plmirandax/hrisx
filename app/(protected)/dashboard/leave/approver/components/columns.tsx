@@ -136,36 +136,32 @@ const CellComponent = ({ row }: { row: RowData }) => {
                         value={`${selectedLeaves?.user.firstName || ''} ${selectedLeaves?.user.lastName || ''}`}
                         disabled={isPending}
                         readOnly
+                        className="mt-2"
                       />
                 </div>
               </div>
               <div className="w-1/2">
               <FormLabel className="font-semibold">Leave Type</FormLabel>
-                            <Select>
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder={selectedLeaves?.leaveType} aria-readonly />
-                              </SelectTrigger>
-                            </Select>
+              <Input value={selectedLeaves?.leaveType} readOnly className="mt-2" />
               </div>
             </div>
 
             <div className="flex space-x-4 mt-4">
               <div className="w-1/2">
               <FormLabel className="font-semibold">Start Date</FormLabel>
-                        <Input value={selectedLeaves?.startDate} readOnly />
+                        <Input value={selectedLeaves?.startDate} readOnly className="mt-2" />
               </div>
               <div className="w-1/2">
               <FormLabel className="font-semibold">End Date</FormLabel>
-                        <Input value={selectedLeaves?.endDate} readOnly />
+                        <Input value={selectedLeaves?.endDate} readOnly className="mt-2" />
               </div>
             </div>
             <div className="mt-4 mb-4">
             <FormLabel className="font-semibold">Reason</FormLabel>
                       <Textarea
                         value={selectedLeaves?.reason}
-                        disabled
                         placeholder="Enter reason here..."
-                        className="h-[100px]"
+                        className="h-[60px] mt-2"
                         readOnly
                       />
             </div>

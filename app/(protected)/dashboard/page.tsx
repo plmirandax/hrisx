@@ -54,7 +54,7 @@ export default async function Dashboard() {
   const totalLeaves = leavesUser.length;
 
   return (
-    <div className="flex flex-1 min-h-screen w-full flex-col">
+    <div className="flex flex-1 max-h-screen w-full flex-col">
       <div className="flex justify-between items-center mb-[-8px] ml-8 mr-8 mt-3">
         <Label className="text-2xl font-bold">Welcome to your dashboard, {user.user.firstName}!</Label>
           <CreatLeaveForm />

@@ -1,5 +1,4 @@
 'use client'
-
 import React from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import Link from 'next/link'
@@ -7,10 +6,8 @@ import { CircleUser, ClipboardListIcon, FileTextIcon, HomeIcon, Menu, Package2, 
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { ModeToggle } from '../theme-toggle'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
-import Image from 'next/image'
 import TeamSwitcher from './team-switcher'
 import { SystemMenu } from './system-menu'
 
@@ -25,8 +22,9 @@ export function Header (){
   };
 
   return (
+    <>
     <div className="flex w-full flex-col mb-4">
-<header className="sticky top-0 flex h-16 items-center gap-6 border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 flex h-16 items-center gap-6 border-b bg-background px-4 md:px-6">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <TeamSwitcher />
         <SystemMenu />
@@ -115,6 +113,8 @@ export function Header (){
         </div>
       </header>
     </div>
+    </>
+    
   )
 }
 
