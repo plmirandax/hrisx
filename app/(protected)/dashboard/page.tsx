@@ -294,7 +294,7 @@ export default async function Dashboard() {
                       <p className="text-sm font-semibold leading-none">{subordinate.firstName} {subordinate.lastName}</p>
                       <p className="text-sm text-muted-foreground">{subordinate.email}</p>
                     </div>
-                    <div className="ml-auto font-medium">{subordinate.role}</div>
+                    <div className="ml-auto"><Badge variant='outline'>{subordinate.role}</Badge></div>
                   </div>
                 ))}
               </CardContent>
