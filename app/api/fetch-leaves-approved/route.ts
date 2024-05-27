@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
     // Fetch leaves associated with the userId
     const leaves = await prisma.leave.findMany({
-      where: { userId, status: 'Approved' },
+      where: { userId, status: 'Approved', pmdStatus: 'Approved' },
       include: {
         user: {
           select: {
