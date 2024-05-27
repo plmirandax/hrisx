@@ -5,15 +5,12 @@ import { DataTable } from "./components/data-table";
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import axios from 'axios'; // Import Axios
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, CheckCheckIcon, Hourglass, Trash, User2Icon } from 'lucide-react';
-import { RegisterForm } from '@/components/auth/register-form';
+import { User2Icon } from 'lucide-react';
+
 
 export default function EmployeeManagementPage() {
   const [employees, setEmployees] = useState([]);
-  const [employeesApprover, setEmployeeApprover] = useState([]);
-  const [employeesTotal, setEmployeesTotal] = useState([]);
   const user = useCurrentUser();
 
   if (!user) {
