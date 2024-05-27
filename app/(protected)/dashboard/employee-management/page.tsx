@@ -13,14 +13,6 @@ export default function EmployeeManagementPage() {
   const [employees, setEmployees] = useState([]);
   const user = useCurrentUser();
 
-  if (!user) {
-    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
-  }
-
-  const isAdmin = user?.role === 'Administrator';
-  const isUser = user?.role === 'User';
-  const isApprover = user?.role === 'Approver'
-  const isPMD = user?.role === 'PMD';
 
   useEffect(() => {
     fetch('/api/fetch-employees') // replace with your API route
@@ -33,6 +25,16 @@ export default function EmployeeManagementPage() {
       .then(data => setEmployees(data.employees))
       .catch(() => toast.error('An error occurred while fetching leave types. Please try again.'));
   }, []);
+
+  
+  if (!user) {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
+
+  const isAdmin = user?.role === 'Administrator';
+  const isUser = user?.role === 'User';
+  const isApprover = user?.role === 'Approver'
+  const isPMD = user?.role === 'PMD';
 
   if (!isAdmin && !isPMD && !isApprover) {
     return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
