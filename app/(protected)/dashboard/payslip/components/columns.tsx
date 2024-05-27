@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, UserCircle } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CardTitle } from "@/components/ui/card";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
 import { Payslips } from "../data/schema";

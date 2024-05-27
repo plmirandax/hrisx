@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { BadgeEuro, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { Metadata } from "next";
 
 function formatDate(dateString: string): string {

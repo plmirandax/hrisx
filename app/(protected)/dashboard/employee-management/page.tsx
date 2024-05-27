@@ -32,7 +32,6 @@ export default function EmployeeManagementPage() {
   }
 
   const isAdmin = user?.role === 'Administrator';
-  const isUser = user?.role === 'User';
   const isApprover = user?.role === 'Approver'
   const isPMD = user?.role === 'PMD';
 

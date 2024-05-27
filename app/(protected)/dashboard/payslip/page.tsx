@@ -5,15 +5,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import axios from 'axios'; // Import Axios
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, ArrowUpRight, CheckCheckIcon, DollarSignIcon, Hourglass, Trash } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DollarSignIcon } from 'lucide-react';
 import { DataTable } from './components/data-table';
-import { FaMoneyCheck } from 'react-icons/fa';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+
 
 export default function PayslipPage() {
   const [payslipsTotal, setPayslipTotal] = useState([]);

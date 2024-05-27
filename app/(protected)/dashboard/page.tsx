@@ -48,8 +48,6 @@ export default async function Dashboard() {
   const leavesApproved = await fetchLeaveDataUserApproved(user.user.id);
   const pendingLeaves = leavesUser.filter(leave => leave.status === 'Pending');
   const totalPendingLeaves = pendingLeaves.length;
-  const approvedLeaves = leavesUser.filter(leave => leave.status === 'Approved');
-  const totalApprovedLeaves = approvedLeaves.length;
   const declinedLeaves = leavesUser.filter(leave => leave.status === 'Declined');
   const totalDeclinedLeaves = declinedLeaves.length;
   const totalLeaves = leavesUser.length;
