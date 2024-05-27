@@ -173,7 +173,7 @@ export default async function Dashboard() {
                             <Badge className="text-xs" variant="outline">{formatDate(leave.endDate)}</Badge>
                           </TableCell>
                           <TableCell className="hidden md:table-cell">{leave.reason}</TableCell>
-                          <TableCell className="hidden md:table-cell"><Badge>{leave.status}</Badge></TableCell>
+                          <TableCell className="hidden md:table-cell"><Badge variant='pending'>{leave.status}</Badge></TableCell>
                         </TableRow>
                       </TableBody>
                     ))}
@@ -246,7 +246,7 @@ export default async function Dashboard() {
                             <Badge className="text-xs" variant="outline">{formatDate(leave.endDate)}</Badge>
                           </TableCell>
                           <TableCell className="hidden md:table-cell">{leave.reason}</TableCell>
-                          <TableCell className="hidden md:table-cell"><Badge>{leave.status}</Badge></TableCell>
+                          <TableCell className="hidden md:table-cell"><Badge variant='pending'>{leave.status}</Badge></TableCell>
                         </TableRow>
                       </TableBody>
                     ))}

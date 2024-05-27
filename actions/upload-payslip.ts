@@ -33,6 +33,6 @@ export const UploadPayslip = async (values: z.infer<typeof UploadPayslipSchema>)
 
 
 
-  revalidatePath('/dashboard/settings')
+  revalidatePath('/dashboard/payslip')
   return { success: "Payslip uploaded successfully." };
 };

@@ -8,6 +8,7 @@ export async function GET() {
     // Fetch all properties from the database
     const employees = await prisma.user.findMany({
           select: {
+            id: true,
             firstName: true,
             lastName: true,
             email: true,

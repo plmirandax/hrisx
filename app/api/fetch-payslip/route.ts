@@ -28,10 +28,26 @@ export async function POST(req: Request) {
       },
     });
 
+     // Fetch leaves associated with the userId
+     const payslipsTotal = await prisma.payslip.findMany({
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
     // Return the fetched leaves data
     return NextResponse.json({
       status: 'success',
       payslips,
+      payslipsTotal
     });
   } catch (error) {
     console.error("Error during fetching of payslips:", error);

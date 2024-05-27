@@ -195,25 +195,8 @@ export const columns: ColumnDef<Leaves>[] = [
     // Use a custom cell renderer to display the content as a badge
     cell: ({ row }) => {
       const status = row.original.status; // Accessing the status value from the row data
-  
-      // Determine badge color based on status
-      let badgeColor;
-      switch (status) {
-        case 'Pending':
-          badgeColor = 'warning';
-          break;
-        case 'Approved':
-          badgeColor = 'success';
-          break;
-        case 'Rejected':
-          badgeColor = 'danger';
-          break;
-        default:
-          badgeColor = 'primary';
-      }
-  
       return (
-        <Badge color={badgeColor}>{status}</Badge>
+        <Badge variant='pending'>{status}</Badge>
       );
     }
   },

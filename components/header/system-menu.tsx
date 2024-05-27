@@ -61,18 +61,12 @@ export function SystemMenu() {
         </NavigationMenuItem>
         {(isAdmin || isPMD) && (
         <NavigationMenuItem>
-          <NavigationMenuTrigger><Users2Icon className="h-4 w-4 mr-2"/>Employee Management</NavigationMenuTrigger>
-          <NavigationMenuContent>
-          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              <ListItem href="/dashboard/employee-management" title="Employee Dashboard 👨‍👩‍👧‍👧">
-                Re-usable components built using Radix UI and Tailwind CSS.
-              </ListItem>
-              <ListItem href="/dashboard/employee-management/reports" title="Employee Management Reports 📈">
-                How to install dependencies and structure your app.
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+        <Link href="/dashboard/employee-management" legacyBehavior passHref>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <Users2Icon className="h-4 w-4 mr-2"/>Employee Management
+          </NavigationMenuLink>
+        </Link>
+      </NavigationMenuItem>
           )}
           <NavigationMenuItem>
           <Link href="/dashboard/payslip" legacyBehavior passHref>
