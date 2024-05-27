@@ -1,7 +1,5 @@
 import { auth } from '@/auth';
-import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
-import HeaderMobile from '@/components/sidebar/header-mobile';
 import { SideBarNav } from '@/components/sidebar/sidebar';
 import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';
@@ -24,7 +22,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div suppressHydrationWarning>
         <Header />
         <Toaster />
-
+        <SideBarNav />
         {children}
         </div>
       </body>
