@@ -143,7 +143,7 @@ export const RegisterForm = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="h-8 w-[150px] lg:w-[250px]">
           <PlusCircleIcon className="mr-2 w-4 h-4" />
           Register Employee
         </Button>

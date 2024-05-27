@@ -11,6 +11,7 @@ import { statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { DataTableViewOptions } from "./data-table-view-options"
 import { RegisterForm } from "@/components/auth/register-form"
+import { File } from "lucide-react"
 
 
 interface DataTableToolbarProps<TData> {
@@ -25,25 +26,24 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-
+      <RegisterForm />
         <Input
           placeholder="Filter employees..."
-          value={(table.getColumn("fullName")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("role")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("fullName")?.setFilterValue(event.target.value)
+            table.getColumn("role")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        <RegisterForm />
-        {/*}
-        {table.getColumn("regOwnerName") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("regOwnerName")}
-            title="Registered Owner"
-            options={priorities}
-          />
-        )}
-        */}
+      
+        <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-8"
+                  >
+                    <File className="h-4 w-4 mr-2" />
+                    <span>Export to Excel</span>
+                  </Button>
         {isFiltered && (
           <Button
             variant="outline"

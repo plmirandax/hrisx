@@ -103,7 +103,7 @@ export const UploadPayslipForm = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="h-8">
           <PlusCircleIcon className="mr-2 w-4 h-4" />
           Upload Employee Payslip
         </Button>

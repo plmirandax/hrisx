@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input"
 import { statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { DataTableViewOptions } from "./data-table-view-options"
+import { UploadPayslipForm } from "../../_components/payslip-upload"
+import { useCurrentUser } from "@/hooks/use-current-user"
 
 
 interface DataTableToolbarProps<TData> {
@@ -21,35 +23,27 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
+  const user = useCurrentUser();
+
+  const isAdmin = user?.role === 'Administrator';
+  const isUser = user?.role === 'User';
+  const isApprover = user?.role === 'Approver'
+  const isPMD = user?.role === 'PMD';
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-
+      {(isAdmin || isPMD) && (
+        <UploadPayslipForm />
+      )}
         <Input
-          placeholder="Filter properties..."
+          placeholder="Filter payslips..."
           value={(table.getColumn("months")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("months")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        
-        {table.getColumn("periods") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("periods")}
-            title="Periods"
-            options={statuses}
-          />
-        )}
-        {/*}
-        {table.getColumn("regOwnerName") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("regOwnerName")}
-            title="Registered Owner"
-            options={priorities}
-          />
-        )}
-        */}
         {isFiltered && (
           <Button
             variant="outline"

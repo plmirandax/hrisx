@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { DataTableViewOptions } from "./data-table-view-options"
+import { File } from "lucide-react"
 
 
 interface DataTableToolbarProps<TData> {
@@ -33,23 +34,14 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
-        {/*}
-        {table.getColumn("regOwnerName") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("regOwnerName")}
-            title="Registered Owner"
-            options={priorities}
-          />
-        )}
-        */}
+        <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-8"
+                  >
+                    <File className="h-4 w-4 mr-2" />
+                    <span>Export to Excel</span>
+                  </Button>
         {isFiltered && (
           <Button
             variant="outline"
