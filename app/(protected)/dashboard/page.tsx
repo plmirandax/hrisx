@@ -84,7 +84,7 @@ export default async function Dashboard() {
               <CheckCheckIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">{totalApprovedLeaves}</div>
+              <div className="text-2xl font-bold mt-3">{leavesApproved.length}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-2">
@@ -191,7 +191,7 @@ export default async function Dashboard() {
                   <CardHeader>
                     <CardTitle>Your Approved Leaves</CardTitle>
                     <CardDescription>
-                      You have {approvedLeaves.length} approved leave requests.
+                      You have {leavesApproved.length} approved leave requests.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -209,7 +209,7 @@ export default async function Dashboard() {
                     </TableRow>
                   </TableHeader>
                   {leavesApproved
-                    .filter(leave => leave.status === 'Approved')
+                    .filter(leave => leave.status === 'Approved' || leave.pmdStatus === 'Approved')
                     .reverse()
                     .slice(0, 5) // Limit to the last 5 records
                     .map(leave => (
