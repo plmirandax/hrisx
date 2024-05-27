@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { DataTableViewOptions } from "./data-table-view-options"
+import { RegisterForm } from "@/components/auth/register-form"
 
 
 interface DataTableToolbarProps<TData> {
@@ -26,21 +27,14 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
 
         <Input
-          placeholder="Filter requests..."
-          value={(table.getColumn("leaveType")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter employees..."
+          value={(table.getColumn("fullName")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("leaveType")?.setFilterValue(event.target.value)
+            table.getColumn("fullName")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
+        <RegisterForm />
         {/*}
         {table.getColumn("regOwnerName") && (
           <DataTableFacetedFilter

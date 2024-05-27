@@ -7,7 +7,7 @@ import { Row } from "@tanstack/react-table";
 import { useEffect, useState, useTransition } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, UserCircle } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -26,6 +26,7 @@ import { z } from "zod";
 import { Statuses } from "@prisma/client";
 import { ApproveLeaveRequest } from "@/actions/approve-leave";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 type LeaveType = {
   id: string;
@@ -135,6 +136,20 @@ export const columns: ColumnDef<Leaves>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="" />
     ),
+    // Use a custom cell renderer to conditionally render the image or default user icon
+    cell: ({ row }) => {
+      const image = row.original.user.image; // Accessing the image value from the row data
+  
+      return (
+        <div className="flex items-center">
+          {image ? (
+            <Image src={image} alt="User" className="h-8 w-8 rounded-full" />
+          ) : (
+            <UserCircle className="h-8 w-8 text-gray-400" />
+          )}
+        </div>
+      );
+    }
   },
   {
     id: "fullName",

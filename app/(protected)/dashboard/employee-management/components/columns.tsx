@@ -7,25 +7,23 @@ import { Row } from "@tanstack/react-table";
 import { useEffect, useState, useTransition } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, UserCircle } from "lucide-react";
+import { MoreHorizontal, User, User2, User2Icon, UserCircle, UserCircle2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CardDescription, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { Input } from "@/components/ui/input";
-import { Leaves } from "../data/schema";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Controller, useForm } from "react-hook-form";
+import { Form, FormLabel } from "@/components/ui/form";
+import {  useForm } from "react-hook-form";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ApproveLeaveSchema } from "@/schemas";
-import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
-import { Statuses } from "@prisma/client";
 import { ApproveLeaveRequest } from "@/actions/approve-leave";
 import { Badge } from "@/components/ui/badge";
+import { Employees } from "../data/schema";
 import Image from "next/image";
 
 type LeaveType = {
@@ -35,39 +33,27 @@ type LeaveType = {
   createdAt: Date;
 };
 
-type RowData = Row<Leaves>;
+type RowData = Row<Employees>;
 const CellComponent = ({ row }: { row: RowData }) => {
-  const leaves = row.original;
+  const employees = row.original;
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLeaves, setSelectedLeaves] = useState<Leaves | null>(null);
+  const [selectedEmployees, setSelectedEmployees] = useState<Employees | null>(null);
 
   const handleOpenModal = () => {
-    setSelectedLeaves(leaves);
+    setSelectedEmployees(employees);
     setIsOpen(true);
   };
 
   const handleCloseModal = () => {
-    setSelectedLeaves(null);
+    setSelectedEmployees(null);
     setIsOpen(false);
   };
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const [leaveTypes, setLeaveTypes] = useState<LeaveType[]>([]);
   const [isPending, startTransition] = useTransition();
   const user = useCurrentUser();
 
-  useEffect(() => {
-    fetch('/api/fetch-leave-type') // replace with your API route
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => setLeaveTypes(data.leaveTypes))
-      .catch(() => toast.error('An error occurred while fetching leave types. Please try again.'));
-  }, []);
 
   const form = useForm<z.infer<typeof ApproveLeaveSchema>>({
     resolver: zodResolver(ApproveLeaveSchema),
@@ -82,9 +68,9 @@ const CellComponent = ({ row }: { row: RowData }) => {
     setSuccess("");
   
     // Check if selectedLeaves is not null and selectedLeaves.id is a string
-    if (selectedLeaves?.id) {
+    if (selectedEmployees?.id) {
       startTransition(() => {
-        ApproveLeaveRequest({ ...values, id: selectedLeaves.id }) // Include the leave ID in the request
+        ApproveLeaveRequest({ ...values, id: selectedEmployees.id }) // Include the leave ID in the request
           .then((data) => {
             setError(data.error);
             toast.success("Leave request updated successfully.")
@@ -117,7 +103,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
         <DropdownMenuContent>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={handleOpenModal}>
-              View Leave Details
+              View Employee Details
             </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -125,8 +111,8 @@ const CellComponent = ({ row }: { row: RowData }) => {
       <div className="flex justify-center items-center z-50">
         <Dialog open={isOpen} onOpenChange={handleCloseModal}>
           <DialogContent className="sm:max-w-[550px]">
-            <CardTitle>Leave Details
-              <CardDescription className="mb-4">Fill in the form below to update tenant details.</CardDescription>
+            <CardTitle>Employee Details
+              <CardDescription className="mb-4">Fill in the form below to update employee details.</CardDescription>
              
               <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -135,70 +121,38 @@ const CellComponent = ({ row }: { row: RowData }) => {
               <div className="w-1/2">
                 <FormLabel>Name</FormLabel>
                       <Input
-                        value={`${selectedLeaves?.user.firstName || ''} ${selectedLeaves?.user.lastName || ''}`}
+                        value={`${selectedEmployees?.firstName || ''} ${selectedEmployees?.lastName || ''}`}
                         readOnly
                         className="mt-2"
                       />
               </div>
               <div className="w-1/2">
-              <FormLabel>Leave Type</FormLabel>
-              <Input value={selectedLeaves?.leaveType} readOnly className="mt-2 font-xl" />
+              <FormLabel>Email</FormLabel>
+              <Input value={selectedEmployees?.email} readOnly className="mt-2 font-xl" />
               </div>
             </div>
 
             <div className="flex space-x-4 mt-4">
               <div className="w-1/2">
-              <FormLabel>Start Date</FormLabel>
-                        <Input value={selectedLeaves?.startDate} readOnly className="mt-2" />
+              <FormLabel>Contact No.</FormLabel>
+                        <Input value={selectedEmployees?.contactNo} readOnly className="mt-2" />
               </div>
               <div className="w-1/2">
-              <FormLabel>End Date</FormLabel>
-                        <Input value={selectedLeaves?.endDate} readOnly className="mt-2" />
+              <FormLabel>Address</FormLabel>
+                        <Input value={selectedEmployees?.address} readOnly className="mt-2" />
               </div>
             </div>
-            <div className="mt-4 mb-4">
-            <FormLabel>Reason</FormLabel>
-                      <Textarea
-                        value={selectedLeaves?.reason}
-                        placeholder="Enter reason here..."
-                        className="h-[60px] mt-2"
-                        readOnly
-                      />
+            <div className="flex space-x-4 mt-4">
+              <div className="w-1/2">
+              <FormLabel>Department</FormLabel>
+                        <Input value={selectedEmployees?.department} readOnly className="mt-2" />
+              </div>
+              <div className="w-1/2">
+              <FormLabel>Role</FormLabel>
+                        <Input value={selectedEmployees?.role} readOnly className="mt-2" />
+              </div>
             </div>
-            <div>
-            <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Approver Status</FormLabel>
-                    <FormControl>
-                      <Controller
-                        name="status"
-                        control={form.control}
-                        render={({ field }) => (
-                          <Select
-                            value={field.value}
-                            onValueChange={field.onChange}
-                            disabled={isPending}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select status..." />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value={Statuses.Approved}>Approve</SelectItem>
-                              <SelectItem value={Statuses.Declined}>Decline</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        )}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            
+            {/*
             <div className="mt-4 mb-4">
               <FormField
                 control={form.control}
@@ -219,11 +173,12 @@ const CellComponent = ({ row }: { row: RowData }) => {
                 )}
               />
             </div>
+              */}
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button disabled={isPending} type="submit" className="w-full mt-4">
-              Submit Leave
+              Update Employee Details
             </Button>
           </form>
         </Form>
@@ -235,7 +190,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
   );
 };
 
-export const columns: ColumnDef<Leaves>[] = [
+export const columns: ColumnDef<Employees>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -261,13 +216,13 @@ export const columns: ColumnDef<Leaves>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "user.image",
+    accessorKey: "image",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="" />
     ),
     // Use a custom cell renderer to conditionally render the image or default user icon
     cell: ({ row }) => {
-      const image = row.original.user.image; // Accessing the image value from the row data
+      const image = row.original.image; // Accessing the image value from the row data
   
       return (
         <div className="flex items-center">
@@ -287,62 +242,56 @@ export const columns: ColumnDef<Leaves>[] = [
     ),
     cell: ({ row }) => (
       <span>
-        {row.original.user.firstName} {row.original.user.lastName}
+        {row.original.firstName} {row.original.lastName}
       </span>
     ),
   },
   {
-    accessorKey: "leaveType",
+    accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Leave Type" />
+      <DataTableColumnHeader column={column} title="Email Address" />
     ),
   },
   {
-    accessorKey: "startDate",
+    accessorKey: "contactNo",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Start Date" />
+      <DataTableColumnHeader column={column} title="Contact No." />
     ),
   },
   {
-    accessorKey: "endDate",
+    accessorKey: "address",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="End Date" />
-    ),
-  },
-
-  {
-    accessorKey: "reason",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reason" />
+      <DataTableColumnHeader column={column} title="Address" />
     ),
   },
   {
-    accessorKey: "status",
+    accessorKey: "role",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Approver Status" />
+      <DataTableColumnHeader column={column} title="Role" />
     ),
     // Use a custom cell renderer to display the content as a badge
     cell: ({ row }) => {
-      const status = row.original.status; // Accessing the status value from the row data
+      const role = row.original.role; // Accessing the status value from the row data
   
-      // Determine badge color based on status
-      let badgeColor;
-      switch (status) {
-        case 'Pending':
-          badgeColor = 'warning';
-          break;
-        case 'Approved':
-          badgeColor = 'success';
-          break;
-        case 'Rejected':
-          badgeColor = 'danger';
-          break;
-        default:
-          badgeColor = 'primary';
-      }
   
       return (
-        <Badge color={badgeColor}>{status}</Badge>
+        <Badge variant='default'>{role}</Badge>
+      );
+    }
+  },
+
+  {
+    accessorKey: "department",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Department" />
+    ),
+
+    cell: ({ row }) => {
+      const department = row.original.department; // Accessing the status value from the row data
+  
+  
+      return (
+        <Badge variant='secondary'>{department}</Badge>
       );
     }
   },

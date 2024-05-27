@@ -8,9 +8,13 @@ export async function GET() {
     // Fetch all properties from the database
     const employees = await prisma.user.findMany({
           select: {
-            id: true,
             firstName: true,
             lastName: true,
+            email: true,
+            contactNo: true,
+            address: true,
+            role: true,
+            department: true
           },
           orderBy: {
             createdAt: 'desc',
@@ -20,7 +24,7 @@ export async function GET() {
     // Return the fetched properties
     return NextResponse.json({
       status: 'success',
-      employees,
+      employees
     });
   } catch (error) {
     console.error("Error during properties fetching:", error);
