@@ -12,6 +12,7 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { DataTableViewOptions } from "./data-table-view-options"
 import { RegisterForm } from "@/components/auth/register-form"
 import { File } from "lucide-react"
+import { useCurrentUser } from "@/hooks/use-current-user"
 
 
 interface DataTableToolbarProps<TData> {
@@ -23,10 +24,18 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
+  const user = useCurrentUser();
+  const isAdmin = user?.role === 'Administrator';
+  const isUser = user?.role === 'User';
+  const isApprover = user?.role === 'Approver'
+  const isPMD = user?.role === 'PMD';
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
+      {(isAdmin || isPMD) && (
       <RegisterForm />
+      )}
         <Input
           placeholder="Filter employees..."
           value={(table.getColumn("role")?.getFilterValue() as string) ?? ""}
