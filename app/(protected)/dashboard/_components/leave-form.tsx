@@ -36,6 +36,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -269,12 +270,22 @@ export const CreateLeaveForm = () => {
                 )}
               />
               </div>
-              <div className="mt-2 w-1/2">
-                <Label>Leave Balance</Label>
-                <Input
-                  placeholder="0"
-                  readOnly
-                />
+              <div className="w-1/2">
+                <Label>Day Type</Label>
+                <div className="mt-2">
+                <Select>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a day type.." />
+      </SelectTrigger>
+      <SelectContent className="mb-4">
+        <SelectGroup>
+          <SelectItem value="apple">Half Day</SelectItem>
+          <SelectItem value="banana">Whole Day</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+                </div>
+
               </div>
             </div>
             <div className="mt-4 mb-4">
