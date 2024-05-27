@@ -13,6 +13,9 @@ import Link from 'next/link';
 
 export default function LeavePage() {
   const [leaves, setLeaves] = useState([]);
+  const [leavesApproved, setLeavesApproved] = useState([]);
+  const [leavesDeclined, setLeavesDeclined] = useState([]);
+  const [leavesTotal, setLeavesTotal] = useState([]);
   const user = useCurrentUser();
 
   useEffect(() => {
@@ -25,6 +28,9 @@ export default function LeavePage() {
         }
   
         setLeaves(response.data.leaves);
+        setLeavesApproved(response.data.leavesApproved);
+        setLeavesDeclined(response.data.leavesDeclined);
+        setLeavesTotal(response.data.leavesTotal);
       } catch (error) {
         toast.error('There was an error in fetching leave requests.');
       }
@@ -50,7 +56,7 @@ export default function LeavePage() {
         
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">0</div>
+              <div className="text-2xl font-bold mt-3">{leaves.length}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-1">
@@ -65,7 +71,7 @@ export default function LeavePage() {
                   </Button>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">0</div>
+              <div className="text-2xl font-bold mt-3">{leavesApproved.length}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-2">
@@ -80,7 +86,7 @@ export default function LeavePage() {
                   </Button>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">0</div>
+              <div className="text-2xl font-bold mt-3">{leavesDeclined.length}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-3">
@@ -95,7 +101,7 @@ export default function LeavePage() {
                   </Button>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">0</div>
+              <div className="text-2xl font-bold mt-3">{leavesTotal.length}</div>
             </CardContent>
           </Card>
         </div>

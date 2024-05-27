@@ -1,4 +1,5 @@
 import { auth } from '@/auth';
+import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
 import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';

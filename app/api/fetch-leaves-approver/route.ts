@@ -28,10 +28,26 @@ export async function POST(req: Request) {
       },
     });
 
+    const leavesTotal = await prisma.leave.findMany({
+      where: { approverId: userId },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
     // Return the fetched leaves data
     return NextResponse.json({
       status: 'success',
       leaves,
+      leavesTotal
     });
   } catch (error) {
     console.error("Error during leaves fetching:", error);

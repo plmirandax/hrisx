@@ -85,7 +85,7 @@ export const UploadPayslipForm = () => {
       UploadPayslip(values)
         .then((data) => {
           setError(data.error);
-          setSuccess(data.success);
+          toast.success("Payslip uploaded successfully.")
 
           if (!data.error) {
             form.reset();
@@ -249,7 +249,7 @@ export const UploadPayslipForm = () => {
             <FormSuccess message={success} />
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button type="button" className="w-full mt-4">Upload Payslip</Button>
+                <Button type="button" className="w-full mt-4" disabled={isPending}>Upload Payslip</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>

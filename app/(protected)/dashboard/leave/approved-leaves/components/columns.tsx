@@ -181,24 +181,8 @@ export const columns: ColumnDef<Leaves>[] = [
     cell: ({ row }) => {
       const status = row.original.status; // Accessing the status value from the row data
   
-      // Determine badge color based on status
-      let badgeColor;
-      switch (status) {
-        case 'Pending':
-          badgeColor = 'warning';
-          break;
-        case 'Approved':
-          badgeColor = 'success';
-          break;
-        case 'Rejected':
-          badgeColor = 'danger';
-          break;
-        default:
-          badgeColor = 'primary';
-      }
-  
       return (
-        <Badge color={badgeColor}>{status}</Badge>
+        <Badge variant='success'>{status}</Badge>
       );
     }
   },
@@ -217,24 +201,8 @@ export const columns: ColumnDef<Leaves>[] = [
     cell: ({ row }) => {
       const status = row.original.status; // Accessing the status value from the row data
   
-      // Determine badge color based on status
-      let badgeColor;
-      switch (status) {
-        case 'Pending':
-          badgeColor = 'warning';
-          break;
-        case 'Approved':
-          badgeColor = 'success';
-          break;
-        case 'Rejected':
-          badgeColor = 'danger';
-          break;
-        default:
-          badgeColor = 'primary';
-      }
-  
       return (
-        <Badge color={badgeColor}>{status}</Badge>
+        <Badge variant='success'>{status}</Badge>
       );
     }
   },

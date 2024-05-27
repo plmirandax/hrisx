@@ -14,7 +14,7 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
     return { error: "Invalid fields!" };
   }
 
-  const { startDate, endDate, leaveType, reason, approverId, userId } = validatedFields.data;
+  const { startDate, endDate, leaveType, reason, approverId, userId, numberOfDays, } = validatedFields.data;
 
   // Create leave record
   await prisma.leave.create({
@@ -25,6 +25,7 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
       leaveType,
       userId,
       approverId,
+      numberOfDays
     },
   });
 

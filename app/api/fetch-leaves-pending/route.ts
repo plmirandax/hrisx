@@ -28,10 +28,60 @@ export async function POST(req: Request) {
       },
     });
 
+    const leavesDeclined = await prisma.leave.findMany({
+      where: { userId, status: 'Declined' },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const leavesApproved = await prisma.leave.findMany({
+      where: { userId, status: 'Approved' },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const leavesTotal = await prisma.leave.findMany({
+      where: { userId },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    
+
     // Return the fetched leaves data
     return NextResponse.json({
       status: 'success',
       leaves,
+      leavesApproved,
+      leavesDeclined,
+      leavesTotal
     });
   } catch (error) {
     console.error("Error during leaves fetching:", error);

@@ -11,12 +11,13 @@ import { fetchLeaveDataApprover } from "./_data/fetchdata";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import Footer from "@/components/footer/footer";
-import { CreatLeaveForm } from "./_components/leave-form";
+
 import { RegisterForm } from "@/components/auth/register-form";
 import { fetchSubordinates } from "./_data/fetch-subordinates";
 import { UploadPayslipForm } from "./_components/payslip-upload";
 import { fetchLeaveDataUser } from "./_data/fetch-leave-data-user";
 import { fetchUserApprover } from "./_data/fetch-user-approver";
+import { CreateLeaveForm } from "./_components/leave-form";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -57,7 +58,7 @@ export default async function Dashboard() {
     <div className="flex flex-1 max-h-screen w-full flex-col">
       <div className="flex justify-between items-center mb-[-8px] ml-8 mr-8 mt-3">
         <Label className="text-2xl font-bold">Welcome to your dashboard, {user.user.firstName}!</Label>
-          <CreatLeaveForm />
+          <CreateLeaveForm />
         {(isAdmin || isPMD) && (
           <>
             <RegisterForm />
@@ -255,7 +256,7 @@ export default async function Dashboard() {
           </div>
       
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-        {( isUser || isApprover || isPMD || isAdmin) && (
+        {( isApprover || isPMD || isAdmin) && (
           <>
           <Card x-chunk="dashboard-01-chunk-5">
               <CardHeader>
@@ -303,7 +304,6 @@ export default async function Dashboard() {
         )}
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

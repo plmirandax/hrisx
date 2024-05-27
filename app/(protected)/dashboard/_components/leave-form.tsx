@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
 import * as z from "zod";
 import { useEffect, useState, useTransition } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { differenceInDays, format } from "date-fns";
 
 import { CreateLeaveSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { DatePicker } from "@/components/ui/datepicker";
 
 type LeaveType = {
   id: string;
@@ -48,7 +50,7 @@ type LeaveType = {
   createdAt: Date;
 };
 
-export const CreatLeaveForm = () => {
+export const CreateLeaveForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [leaveTypes, setLeaveTypes] = useState<LeaveType[]>([]);
@@ -74,10 +76,33 @@ export const CreatLeaveForm = () => {
       endDate: "",
       reason: "",
       leaveType: "",
+      numberOfDays: "",
       approverId: user?.approverId,
       userId: user?.id,
     },
   });
+
+  // Watch for changes in startDate and endDate
+  const startDate = useWatch({
+    control: form.control,
+    name: "startDate",
+  });
+  const endDate = useWatch({
+    control: form.control,
+    name: "endDate",
+  });
+
+  // Calculate the number of days between startDate and endDate
+  useEffect(() => {
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const numberOfDays = differenceInDays(end, start) + 1; // Include the start date
+      form.setValue("numberOfDays", numberOfDays.toString());
+    } else {
+      form.setValue("numberOfDays", ""); // Reset if dates are invalid
+    }
+  }, [startDate, endDate, form]);
 
   const onSubmit = (values: z.infer<typeof CreateLeaveSchema>) => {
     setError("");
@@ -89,7 +114,7 @@ export const CreatLeaveForm = () => {
       CreateLeave(values)
         .then((data) => {
           setError(data.error);
-          setSuccess(data.success);
+        toast.success("Leave submitted successfully.");
           
           if (!data.error) {
             form.reset();
@@ -180,7 +205,17 @@ export const CreatLeaveForm = () => {
                     <FormItem>
                       <FormLabel>Start Date</FormLabel>
                       <FormControl>
-                        <Input {...field} disabled={isPending} type="date" />
+                        <Controller
+                          name="startDate"
+                          control={form.control}
+                          render={({ field }) => (
+                            <DatePicker
+                              value={field.value ? new Date(field.value) : undefined}
+                              onChange={(date) => field.onChange(date ? format(date, 'yyyy-MM-dd') : '')}
+                
+                            />
+                          )}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -195,11 +230,50 @@ export const CreatLeaveForm = () => {
                     <FormItem>
                       <FormLabel>End Date</FormLabel>
                       <FormControl>
-                        <Input {...field} disabled={isPending} type="date" />
+                        <Controller
+                          name="endDate"
+                          control={form.control}
+                          render={({ field }) => (
+                            <DatePicker
+                              value={field.value ? new Date(field.value) : undefined}
+                              onChange={(date) => field.onChange(date ? format(date, 'yyyy-MM-dd') : '')}
+         
+                            />
+                          )}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
+                />
+              </div>
+            </div>
+            <div className="mt-2 mb-4 flex space-x-4">
+              <div className="w-1/2">
+              <FormField
+                control={form.control}
+                name="numberOfDays"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Total # of days</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="0"
+                        readOnly
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              </div>
+              <div className="mt-2 w-1/2">
+                <Label>Leave Balance</Label>
+                <Input
+                  placeholder="0"
+                  readOnly
                 />
               </div>
             </div>

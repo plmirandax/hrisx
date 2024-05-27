@@ -90,14 +90,22 @@ export const CreateDepartmentSchema = z.object({
 })
 
 export const CreateLeaveSchema = z.object({
-  startDate: z.string(),
-  endDate: z.string(),
+  startDate: z.string().min(1, {
+    message: "Start Date is required"
+  }),
+  endDate: z.string().min(1, {
+    message: "End Date is required"
+  }),
   reason: z.string().min(1, {
     message: "Reason is required"
   }),
-  leaveType: z.string(),
+  leaveType: z.string().min(1, {
+    message: "Leave Type is required"
+  }),
   approverId: z.string(),
   userId: z.string(),
+  numberOfDays: z.string().optional(),
+  leaveBalance: z.string().optional(),
 })
 
 export const UploadPayslipSchema = z.object({
