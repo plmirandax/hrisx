@@ -25,6 +25,7 @@ import { z } from "zod";
 import { Statuses } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { ApprovePMDRequest } from "@/actions/approve-leave-pmd";
+import { toast } from "sonner";
 
 type RowData = Row<Leaves>;
 const CellComponent = ({ row }: { row: RowData }) => {
@@ -76,7 +77,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
         ApprovePMDRequest({ ...values, id: selectedLeaves.id, status: newStatus })
           .then((data) => {
             setError(data.error);
-            setSuccess(data.success);
+            toast.success("Leave request has been posted.");
   
             if (!data.error) {
               form.reset();

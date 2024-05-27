@@ -86,7 +86,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
         ApproveLeaveRequest({ ...values, id: selectedLeaves.id }) // Include the leave ID in the request
           .then((data) => {
             setError(data.error);
-            setSuccess(data.success);
+            toast.success("Leave request updated successfully.")
             
             if (!data.error) {
               form.reset();
