@@ -4,7 +4,7 @@ import React from 'react'
 
 import { UploadButton, UploadDropzone } from '@/lib/uploadthing'
 import { Button } from './ui/button'
-import "@uploadthing/react/styles.css";
+
 
 type Props = {
   apiEndpoint: 'image' | 'payslipfile' 
