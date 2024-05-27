@@ -38,6 +38,7 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
 
   // Revalidate the path
   revalidatePath('/dashboard');
+  revalidatePath('/dashboard/leave');
 
   return { success: "Leave application successfully submitted!" };
 };
