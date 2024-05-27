@@ -303,18 +303,39 @@ export const columns: ColumnDef<Leaves>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Leave Type" />
     ),
+     // Use a custom cell renderer to display the content as a badge
+     cell: ({ row }) => {
+      const leaveType = row.original.leaveType; // Accessing the status value from the row data
+      return (
+        <Badge variant='secondary'>{leaveType}</Badge>
+      );
+    }
   },
   {
     accessorKey: "startDate",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Start Date" />
     ),
+     // Use a custom cell renderer to display the content as a badge
+     cell: ({ row }) => {
+      const startDate = row.original.startDate; // Accessing the status value from the row data
+      return (
+        <Badge variant='outline'>{startDate}</Badge>
+      );
+    }
   },
   {
     accessorKey: "endDate",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="End Date" />
     ),
+         // Use a custom cell renderer to display the content as a badge
+         cell: ({ row }) => {
+          const endDate = row.original.endDate; // Accessing the status value from the row data
+          return (
+            <Badge variant='outline'>{endDate}</Badge>
+          );
+        }
   },
 
   {
