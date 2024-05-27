@@ -23,6 +23,8 @@ export const leaveSchema = z.object({
   endDate: z.string(),
   reason: z.string(),
   status: z.string(),
+  pmdStatus: z.string(),
+  pmdRemarks: z.string(),
   approverRemarks: z.string(),
   user: userSchema, // Include the User schema here
 });

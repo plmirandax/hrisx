@@ -23,7 +23,7 @@ export const ApprovePMDRequest = async (values: z.infer<typeof ApprovePMDSchema>
       },
     });
 
-    revalidatePath('/dashboard/leave/approver')
+    revalidatePath('/dashboard/leave/pmd-posting')
     return { success: "Updated successfully!" };
   } catch (error) {
     return { error: "An error occurred while updating the leave request." };

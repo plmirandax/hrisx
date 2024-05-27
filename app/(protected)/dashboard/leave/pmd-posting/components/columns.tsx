@@ -17,7 +17,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Controller, useForm } from "react-hook-form";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ApprovePMDSchema } from "@/schemas";
 import { Textarea } from "@/components/ui/textarea";
@@ -81,6 +80,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
   
             if (!data.error) {
               form.reset();
+              handleCloseModal();
             }
           })
           .finally(() => {
@@ -317,24 +317,10 @@ export const columns: ColumnDef<Leaves>[] = [
     cell: ({ row }) => {
       const status = row.original.status; // Accessing the status value from the row data
   
-      // Determine badge color based on status
-      let badgeColor;
-      switch (status) {
-        case 'Pending':
-          badgeColor = 'warning';
-          break;
-        case 'Approved':
-          badgeColor = 'success';
-          break;
-        case 'Rejected':
-          badgeColor = 'danger';
-          break;
-        default:
-          badgeColor = 'primary';
-      }
+  
   
       return (
-        <Badge color={badgeColor}>{status}</Badge>
+        <Badge variant='success'>{status}</Badge>
       );
     }
   },
@@ -342,6 +328,28 @@ export const columns: ColumnDef<Leaves>[] = [
     accessorKey: "approverRemarks",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Approver Remarks" />
+    ),
+  },
+  {
+    accessorKey: "pmdStatus",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="PMD Status" />
+    ),
+    // Use a custom cell renderer to display the content as a badge
+    cell: ({ row }) => {
+      const pmdStatus = row.original.pmdStatus; // Accessing the status value from the row data
+  
+
+  
+      return (
+        <Badge>{pmdStatus}</Badge>
+      );
+    }
+  },
+  {
+    accessorKey: "pmdRemarks",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="PMD Remarks" />
     ),
   },
   {

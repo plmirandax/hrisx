@@ -90,6 +90,7 @@ const CellComponent = ({ row }: { row: RowData }) => {
             
             if (!data.error) {
               form.reset();
+              handleCloseModal();
             }
           })
           .finally(() => {

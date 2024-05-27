@@ -14,6 +14,36 @@ export async function POST(req: Request) {
 
     // Fetch leaves associated with the userId
     const leaves = await prisma.leave.findMany({
+      where: { pmdStatus: 'Pending', status: 'Approved' },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const leavesDeclined = await prisma.leave.findMany({
+      where: { status: 'Declined' },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const leavesApproved = await prisma.leave.findMany({
       where: { status: 'Approved' },
       include: {
         user: {
@@ -28,10 +58,26 @@ export async function POST(req: Request) {
       },
     });
 
+    const leavesTotal = await prisma.leave.findMany({
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
     // Return the fetched leaves data
     return NextResponse.json({
       status: 'success',
       leaves,
+      leavesApproved,
+      leavesDeclined,
+      leavesTotal
     });
   } catch (error) {
     console.error("Error during leaves fetching:", error);
