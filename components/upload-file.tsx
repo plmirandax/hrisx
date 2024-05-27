@@ -4,6 +4,7 @@ import React from 'react'
 
 import { UploadButton, UploadDropzone } from '@/lib/uploadthing'
 import { Button } from './ui/button'
+import "@uploadthing/react/styles.css";
 
 type Props = {
   apiEndpoint: 'image' | 'payslipfile' 
@@ -24,8 +25,9 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
               src={value}
               alt="uploaded image"
               className="object-contain"
-              width={200}
-              height={200}
+              width={400}
+              height={250}
+              onClick={() => onChange('')}
             />
           </div>
         ) : (
@@ -41,26 +43,19 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
             </a>
           </div>
         )}
-        <Button
-          onClick={() => onChange('')}
-          variant="secondary"
-          type="button"
-        >
-          <X className="flex flex-col h-4 w-4" />
-          Remove file.
-        </Button>
       </div>
+      
     )
   }
   return (
     <div className="w-full items-center">
-      <UploadButton
+      <UploadDropzone
      appearance={{
       button:
         "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed rounded-r-none bg-blue-500 bg-none after:bg-blue-400 mb-2",
-      container: "w-full h-15",
+      container: "w-auto h-15",
       allowedContent:
-        "flex h-1.5 flex-col justify-center px-2 text-white",
+        "flex h-2 flex-col justify-center px-2 text-white",
     }}
         endpoint={apiEndpoint}
         onClientUploadComplete={(res) => {

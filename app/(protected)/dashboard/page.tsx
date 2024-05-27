@@ -8,15 +8,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from "@/
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { fetchLeaveDataApprover } from "./_data/fetchdata";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import Footer from "@/components/footer/footer";
 
 import { RegisterForm } from "@/components/auth/register-form";
 import { fetchSubordinates } from "./_data/fetch-subordinates";
 import { UploadPayslipForm } from "./_components/payslip-upload";
 import { fetchLeaveDataUser } from "./_data/fetch-leave-data-user";
-import { fetchUserApprover } from "./_data/fetch-user-approver";
 import { CreateLeaveForm } from "./_components/leave-form";
 
 function formatDate(dateString: string): string {

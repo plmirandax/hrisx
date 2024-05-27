@@ -77,28 +77,36 @@ export const UploadPayslipForm = () => {
     },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof UploadPayslipSchema>) => {
-    setError("");
-    setSuccess("");
+  const onSubmit = useCallback(
+    (values: z.infer<typeof UploadPayslipSchema>) => {
+      setError("");
+      setSuccess("");
 
-    startTransition(() => {
-      UploadPayslip(values)
-        .then((data) => {
-          setError(data.error);
-          toast.success("Payslip uploaded successfully.")
-
-          if (!data.error) {
-            form.reset();
-          }
-        })
-        .finally(() => {
-          setTimeout(() => {
-            setError(undefined);
-            setSuccess(undefined);
-          }, 5000);
-        });
-    });
-  }, [form]);
+      startTransition(() => {
+        UploadPayslip(values)
+          .then((data) => {
+            if (data.error) {
+              toast.error("Something went wrong. Please try again.")
+            } else {
+              toast.success("Payslip uploaded successfully.");
+              form.reset({
+                payslipFile: "",
+                months: undefined,
+                periods: undefined,
+                userId: "",
+              });
+            }
+          })
+          .finally(() => {
+            setTimeout(() => {
+              setError(undefined);
+              setSuccess(undefined);
+            }, 5000);
+          });
+      });
+    },
+    [form]
+  );
 
   return (
     <Dialog>
