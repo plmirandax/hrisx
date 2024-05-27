@@ -5,12 +5,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import axios from 'axios'; // Import Axios
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Activity, ArrowUpRight, CheckCheckIcon, DollarSignIcon, Hourglass, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { DataTable } from './components/data-table';
 import { FaMoneyCheck } from 'react-icons/fa';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 export default function PayslipPage() {
   const [payslipsTotal, setPayslipTotal] = useState([]);
@@ -20,7 +23,6 @@ export default function PayslipPage() {
 
   const isAdmin = user?.role === 'Administrator';
   const isUser = user?.role === 'User';
-  const isApprover = user?.role === 'Approver'
   const isPMD = user?.role === 'PMD';
 
   useEffect(() => {
@@ -51,6 +53,7 @@ export default function PayslipPage() {
         <p className="text-muted-foreground mt-[-4px]">
           This is where you can view your payslips.
         </p>
+
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-4">
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -63,32 +66,42 @@ export default function PayslipPage() {
             </CardContent>
           </Card>
           </div>
-      <div className="flex-1 overflow-auto mt-8">
-      <Card>
-            <CardHeader className='font-semibold'>
-              Your Payslip History
-            </CardHeader>
-            <CardContent>
-            <Suspense fallback={<Skeleton />}>
-            <DataTable data={payslips} columns={columns} />
-          </Suspense>
-            </CardContent>
-  
-          </Card>
-      {(isAdmin || isPMD) && (
-            <Card className='mt-4'>
-            <CardHeader className='font-semibold'>
-              Uploaded Employee Payslips
-            </CardHeader>
-            <CardContent>
-            <Suspense fallback={<Skeleton />}>
+        <Tabs defaultValue="paysliphistory" className="space-y-4 mt-4">
+  <TabsList>
+    <TabsTrigger value="paysliphistory">Payslip History</TabsTrigger>
+    {(isAdmin || isPMD) && (
+    <TabsTrigger value="uploadedPayslip">Uploaded Employee Payslip</TabsTrigger>
+    )}
+  </TabsList>
+  <TabsContent value="paysliphistory" className="space-y-4">
+    <div className="flex w-full gap-4 md:grid-cols-2 lg:grid-cols-7">
+      <Card className="col-span-4 w-full"> {/* Add w-full class here */}
+        <CardHeader>
+          <CardTitle>Your Payslip History</CardTitle>
+        </CardHeader>
+        <CardContent className="pl-2">
+              <Suspense fallback={<Skeleton />}>
+                <DataTable data={payslips} columns={columns} />
+              </Suspense>
+        </CardContent>
+      </Card>
+    </div>
+  </TabsContent>
+  <TabsContent value="uploadedPayslip" className="space-y-4">
+    <div className="flex w-full gap-4 md:grid-cols-2 lg:grid-cols-7">
+      <Card className="col-span-4 w-full"> {/* Add w-full class here */}
+        <CardHeader>
+          <CardTitle>Uploaded Employee Payslip</CardTitle>
+        </CardHeader>
+        <CardContent className="pl-2">
+        <Suspense fallback={<Skeleton />}>
             <DataTable data={payslipsTotal} columns={columns} />
           </Suspense>
-            </CardContent>
-  
-          </Card>
-           )}
-      </div>
+        </CardContent>
+      </Card>
+    </div>
+  </TabsContent>
+</Tabs>
     </div>
   </div>
   )

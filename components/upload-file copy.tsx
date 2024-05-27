@@ -4,7 +4,7 @@ import React from 'react'
 
 import { UploadButton, UploadDropzone } from '@/lib/uploadthing'
 import { Button } from './ui/button'
-import "@uploadthing/react/styles.css";
+import styles from './FileUpload.module.css'; // Import the CSS module
 
 type Props = {
   apiEndpoint: 'image' | 'payslipfile' 
@@ -43,7 +43,6 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
             </a>
           </div>
         )}
-
       </div>
       
     )

@@ -110,10 +110,7 @@ export default async function Dashboard() {
         <Tabs defaultValue="myPending" className="space-y-4">
             <TabsList>
               <TabsTrigger value="myPending">My Leave Requests</TabsTrigger>
-              {(isAdmin || isPMD || isApprover) && (
-              <TabsTrigger value="forApproval">Approve Leave Requests</TabsTrigger>
-              )}
-              <TabsTrigger value="forPosting">Post Leave Request Requests</TabsTrigger>
+              <TabsTrigger value="forApproval">Pending Leave Requests</TabsTrigger>
             </TabsList>
             <TabsContent value="myPending" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
@@ -241,7 +238,7 @@ export default async function Dashboard() {
                             <Badge className="text-xs" variant="outline">{formatDate(leave.endDate)}</Badge>
                           </TableCell>
                           <TableCell className="hidden md:table-cell">{leave.reason}</TableCell>
-                          <TableCell className="hidden md:table-cell"><Badge variant='success'>{leave.status}</Badge></TableCell>
+                          <TableCell className="hidden md:table-cell"><Badge variant='pending'>{leave.status}</Badge></TableCell>
                         </TableRow>
                       </TableBody>
                     ))}

@@ -17,6 +17,7 @@ import {
 import { CalendarCheck, FileTextIcon, Settings, Users2Icon } from "lucide-react"
 import { FaTasks } from "react-icons/fa"
 import { useCurrentUser } from "@/hooks/use-current-user"
+import TeamSwitcher from "./team-switcher"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -40,24 +41,14 @@ export function SystemMenu() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger><CalendarCheck className="h-4 w-4 mr-2"/>Leave Management</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid p-4 md:w-[200px] lg:w-[200px]">
-              <ListItem href="/dashboard/leave" title="My Leave Page 🗓️">
-           
-              </ListItem>
-              {(isPMD || isApprover || isAdmin) && (
-              <ListItem href="/dashboard/leave/approver" title="For Approval ✅">
-            
-              </ListItem>
-              )}
-              {(isPMD || isAdmin) && (
-              <ListItem href="/dashboard/leave/pmd-posting" title="PMD Approval ✅">
-             
-              </ListItem>
-              )}
-            </ul>
-          </NavigationMenuContent>
+        <TeamSwitcher />
+        </NavigationMenuItem>
+        <NavigationMenuItem className="ml-4">
+          <Link href="/dashboard/leave" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <CalendarCheck className="h-4 w-4 mr-2"/>View Payslip
+            </NavigationMenuLink>
+          </Link>
         </NavigationMenuItem>
         {(isAdmin || isPMD) && (
         <NavigationMenuItem>

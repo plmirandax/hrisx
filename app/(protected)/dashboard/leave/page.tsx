@@ -1,125 +1,144 @@
-'use client'
-import { Suspense, useEffect, useState } from 'react';
-import { columns } from "./components/columns";
-import { DataTable } from "./components/data-table";
-import { Skeleton } from '@/components/ui/skeleton';
-import { toast } from 'sonner';
-import { useCurrentUser } from '@/hooks/use-current-user';
-import axios from 'axios'; // Import Axios
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, ArrowUpRight, CheckCheckIcon, Hourglass, Trash } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import Link from "next/link";
+import { Activity, ArrowUpRight, CheckCheckIcon, DollarSignIcon, Hourglass, MoreHorizontal, StopCircle, StopCircleIcon, Trash, User, XIcon } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader,TableRow } from "@/components/ui/table";
+import { Label } from "@/components/ui/label";
+import { auth } from "@/auth";
+import Image from "next/image";
+import { RegisterForm } from "@/components/auth/register-form";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { fetchSubordinates } from "../_data/fetch-subordinates";
+import { fetchLeaveDataApprover } from "../_data/fetchdata";
+import { fetchLeaveDataUser, fetchLeaveDataUserApproved } from "../_data/fetch-leave-data-user";
+import { CreateLeaveForm } from "../_components/leave-form";
+import MyPendingLeaveForm from "./leave-components-forms/my-pending-leaves";
+import ApproverLeaveForm from "./leave-components-forms/approver-form";
+import PMDApproverForm from "./leave-components-forms/pmd-approver";
 
-export default function LeavePage() {
-  const [leaves, setLeaves] = useState([]);
-  const [leavesApproved, setLeavesApproved] = useState([]);
-  const [leavesDeclined, setLeavesDeclined] = useState([]);
-  const [leavesTotal, setLeavesTotal] = useState([]);
-  const user = useCurrentUser();
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
+  return `${month}-${day}-${year}`;
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.post('/api/fetch-leaves-pending', { userId: user?.id }); // THis get's the leave requests of the logged in user, change to approverId if you want to get the for approval of leave requests.
-  
-        if (!response.data) {
-          throw new Error('Failed to fetch leave data');
-        }
-  
-        setLeaves(response.data.leaves);
-        setLeavesApproved(response.data.leavesApproved);
-        setLeavesDeclined(response.data.leavesDeclined);
-        setLeavesTotal(response.data.leavesTotal);
-      } catch (error) {
-        toast.error('There was an error in fetching leave requests.');
-      }
-    }
-  
-    if (user) {
-      fetchData();
-    }
-  }, [user]);
+export default async function LeaveDashboard() {
+  const user = await auth();
+
+  if (!user) {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
+
+  const isAdmin = user.user.role === 'Administrator';
+  const isUser = user.user.role === 'User';
+  const isApprover = user.user.role === 'Approver'
+  const isPMD = user.user.role === 'PMD';
+
+  if (!isAdmin && !isUser && !isPMD && !isApprover) {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
+
+  const subordinates = await fetchSubordinates(user.user.id);
+  const leaves = await fetchLeaveDataApprover(user.user.id);
+  const leavesUser = await fetchLeaveDataUser(user.user.id);
+  const leavesApproved = await fetchLeaveDataUserApproved(user.user.id);
+  const pendingLeaves = leavesUser.filter(leave => leave.status === 'Pending');
+  const totalPendingLeaves = pendingLeaves.length;
+  const approvedLeaves = leavesUser.filter(leave => leave.status === 'Approved');
+  const totalApprovedLeaves = approvedLeaves.length;
+  const declinedLeaves = leavesUser.filter(leave => leave.status === 'Declined');
+  const totalDeclinedLeaves = declinedLeaves.length;
+  const totalLeaves = leavesUser.length;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 flex flex-col p-4 mt-[-10px]">
-      <h2 className="text-2xl font-bold tracking-tight">Your pending leave requests.</h2>
-          <p className="text-muted-foreground mt-[-4px]">
-            This is where you can manage your pending leave requests.
-          </p>
-        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-4">
+    <div className="flex flex-1 max-h-screen w-full flex-col">
+      <div className="flex justify-between items-center mb-[-8px] ml-8 mr-8 mt-3">
+        <Label className="text-2xl font-bold">Welcome to your Leave Management page, {user.user.firstName}!</Label>
+          <CreateLeaveForm />
+      </div>
+      
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Pending Leaves</CardTitle>
               <Hourglass className="h-4 w-4 text-muted-foreground" />
-        
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">{leaves.length}</div>
+              <div className="text-2xl font-bold mt-3">{totalPendingLeaves}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium mr-4">Approved Leaves</CardTitle>
+              <CardTitle className="text-sm font-medium">Approved Leaves</CardTitle>
               <CheckCheckIcon className="h-4 w-4 text-muted-foreground" />
-              <Button asChild size="sm" className="ml-auto mr-4">
-                    <Link href="/dashboard/leave/approved-leaves">
-                      View All
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">{leavesApproved.length}</div>
+              <div className="text-2xl font-bold mt-3">{totalApprovedLeaves}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium mr-4">Declined Leaves</CardTitle>
+              <CardTitle className="text-sm font-medium">Declined Leaves</CardTitle>
               <Trash className="h-4 w-4 text-muted-foreground" />
-              <Button asChild size="sm" className="ml-auto mr-4">
-                    <Link href="/dashboard/leave/declined-leaves">
-                      View All
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">{leavesDeclined.length}</div>
+              <div className="text-2xl font-bold mt-3">{totalDeclinedLeaves}</div>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-3">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium mr-4">Submitted Leaves</CardTitle>
+              <CardTitle className="text-sm font-medium">Submitted Leaves</CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
-              <Button asChild size="sm" className="ml-auto mr-4">
-                    <Link href="/dashboard/employee-management">
-                      View All
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold mt-3">{leavesTotal.length}</div>
+              <div className="text-2xl font-bold mt-3">{totalLeaves}</div>
             </CardContent>
           </Card>
         </div>
-        <div className="flex-1 overflow-auto mt-8">
-          <Card>
-            <CardHeader className='font-semibold'>
-              Leave Details
-            </CardHeader>
-            <CardContent>
-            <Suspense fallback={<Skeleton />}>
-            <DataTable data={leaves} columns={columns} />
-          </Suspense>
-            </CardContent>
+
+
+        <Tabs defaultValue="myPending" className="space-y-4">
+            <TabsList>
+            <TabsTrigger value="myPending">My Leave Requests</TabsTrigger>
+              {(isAdmin || isPMD || isApprover) && (
+              <TabsTrigger value="forApproval">Approve Leave Requests</TabsTrigger>
+              )}
+              <TabsTrigger value="forPosting">Post Leave Request Requests</TabsTrigger>
+              <TabsTrigger value="leaveHistory">My Leave History</TabsTrigger>
+            </TabsList>
+            <TabsContent value="myPending" className="space-y-4">
+            <div className="flex gap-2 md:grid-cols-2 mb-[-20px]">
+              <div className="w-full">
+                  <MyPendingLeaveForm />
+              </div>
+              </div>
+            </TabsContent>
+            <TabsContent value="forApproval" className="space-y-4">
+            <div className="flex grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="w-full">
+              <ApproverLeaveForm />
+              </div>
+
   
-          </Card>
- 
-        </div>
-      </div>
+  </div>
+</TabsContent>
+<TabsContent value="forPosting" className="space-y-4">
+            <div className="flex grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="w-full">
+              <PMDApproverForm />
+              </div>
+
+  
+  </div>
+</TabsContent>
+          </Tabs>
+
+      </main>
     </div>
-  )
+  );
 }
