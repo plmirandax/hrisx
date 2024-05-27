@@ -22,10 +22,6 @@ export default function EmployeeManagementPage() {
   const isApprover = user?.role === 'Approver'
   const isPMD = user?.role === 'PMD';
 
-  if (!isAdmin && !isPMD && !isApprover) {
-    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
-  }
-
   useEffect(() => {
     fetch('/api/fetch-employees') // replace with your API route
       .then(response => {
@@ -38,7 +34,12 @@ export default function EmployeeManagementPage() {
       .catch(() => toast.error('An error occurred while fetching leave types. Please try again.'));
   }, []);
 
+  if (!isAdmin && !isPMD && !isApprover) {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
+
   return (
+
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 flex flex-col p-4 mt-[-10px]">
       <h2 className="text-2xl font-bold tracking-tight">Employee Management</h2>
