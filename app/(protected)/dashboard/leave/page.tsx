@@ -100,12 +100,12 @@ export default async function LeaveDashboard() {
     </div>
         <Tabs defaultValue="myPending" className="space-y-4">
             <TabsList>
-            <TabsTrigger value="myPending">My Leave Requests</TabsTrigger>
+            <TabsTrigger value="myPending">My Leaves</TabsTrigger>
               {(isAdmin || isPMD || isApprover) && (
-              <TabsTrigger value="forApproval">Approve Leave Requests</TabsTrigger>
+              <TabsTrigger value="forApproval">Approve Leaves</TabsTrigger>
               )}
                  {(isAdmin || isPMD ) && (
-              <TabsTrigger value="forPosting">Post Leave Request Requests</TabsTrigger>
+              <TabsTrigger value="forPosting">Post Leaves</TabsTrigger>
                  )}
               <TabsTrigger value="leaveHistory">My Leave History</TabsTrigger>
             </TabsList>
