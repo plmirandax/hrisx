@@ -238,7 +238,7 @@ export default async function Dashboard() {
                             <div className="font-medium">{leave.user.firstName} {leave.user.lastName}</div>
                             <div className="hidden text-sm text-muted-foreground md:inline">{leave.user.email}</div>
                           </TableCell>
-                          <TableCell><Badge variant='secondary'></Badge>{leave.leaveType}</TableCell>
+                          <TableCell><Badge variant='secondary'>{leave.leaveType}</Badge></TableCell>
                           <TableCell>
                             <Badge className="text-xs" variant="outline">{formatDate(leave.startDate)}</Badge>
                           </TableCell>
