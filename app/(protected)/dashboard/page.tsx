@@ -16,6 +16,7 @@ import { UploadPayslipForm } from "./_components/payslip-upload";
 import { fetchLeaveDataUser, fetchLeaveDataUserApproved } from "./_data/fetch-leave-data-user";
 import { CreateLeaveForm } from "./_components/leave-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PMDApproverForm from "./leave/leave-components-forms/pmd-approver";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -106,14 +107,16 @@ export default async function Dashboard() {
           </Card>
         </div>
 
-
+        
         <Tabs defaultValue="myPending" className="space-y-4">
             <TabsList>
               <TabsTrigger value="myPending">My Leave Requests</TabsTrigger>
               {(isAdmin || isPMD || isApprover) && (
               <TabsTrigger value="forApproval">Approve Leave Requests</TabsTrigger>
               )}
+               {(isAdmin || isPMD ) && (
               <TabsTrigger value="forPosting">Post Leave Request Requests</TabsTrigger>
+               )}
             </TabsList>
             <TabsContent value="myPending" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
@@ -263,7 +266,7 @@ export default async function Dashboard() {
                     <CardDescription>that needs your approval.</CardDescription>
                   </div>
                   <Button asChild size="sm" className="ml-auto mr-4 mt-[-35px]">
-                    <Link href="/dashboard/leave/approver">
+                    <Link href="/dashboard/leave">
                       View All
                       <ArrowUpRight className="h-4 w-4" />
                     </Link>
@@ -374,6 +377,15 @@ export default async function Dashboard() {
           </Card>
         )}
       </div>
+  </div>
+</TabsContent>
+<TabsContent value="forPosting" className="space-y-4">
+            <div className="flex grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="w-full">
+              <PMDApproverForm />
+              </div>
+
+  
   </div>
 </TabsContent>
           </Tabs>

@@ -7,7 +7,7 @@ import { Row } from "@tanstack/react-table";
 import { useEffect, useState, useTransition } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, UserCircle } from "lucide-react";
+import { MoreHorizontal, PenIcon, Trash, UserCircle } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -104,7 +104,35 @@ const CellComponent = ({ row }: { row: RowData }) => {
       setError("Selected leave is not valid");
     }
   };
+
+  return (
+    <>
+    <div>
+    <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant='ghost' className="w-8 h-8 p-0">
+        <MoreHorizontal className="h-4 w-4"/>
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem onClick={handleOpenModal}>
+          Edit <PenIcon className="h-3.5 w-3.5 ml-4"/>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleOpenModal}>
+          Delete <Trash className="h-3.5 w-3.5 ml-4" />
+        </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+    </div>
+    
+    </>
+    
+  )
+
 };
+
+
 
 export const columns: ColumnDef<Leaves>[] = [
   {
@@ -220,5 +248,12 @@ export const columns: ColumnDef<Leaves>[] = [
         <Badge variant='pending'>{status}</Badge>
       );
     }
+  },
+  {
+    id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Actions" />
+    ),
+    cell: CellComponent, // Use the component you defined above
   },
 ];

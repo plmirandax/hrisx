@@ -17,6 +17,7 @@ import { CreateLeaveForm } from "../_components/leave-form";
 import MyPendingLeaveForm from "./leave-components-forms/my-pending-leaves";
 import ApproverLeaveForm from "./leave-components-forms/approver-form";
 import PMDApproverForm from "./leave-components-forms/pmd-approver";
+import LeaveHistoryForm from "./leave-components-forms/leave-history";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -58,7 +59,6 @@ export default async function LeaveDashboard() {
     <div className="flex flex-1 max-h-screen w-full flex-col">
       <div className="flex justify-between items-center mb-[-8px] ml-8 mr-8 mt-3">
         <Label className="text-2xl font-bold">Welcome to your Leave Management page, {user.user.firstName}!</Label>
-          <CreateLeaveForm />
       </div>
       
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
@@ -101,14 +101,18 @@ export default async function LeaveDashboard() {
           </Card>
         </div>
 
-
+    <div>
+      <CreateLeaveForm />
+    </div>
         <Tabs defaultValue="myPending" className="space-y-4">
             <TabsList>
             <TabsTrigger value="myPending">My Leave Requests</TabsTrigger>
               {(isAdmin || isPMD || isApprover) && (
               <TabsTrigger value="forApproval">Approve Leave Requests</TabsTrigger>
               )}
+                 {(isAdmin || isPMD ) && (
               <TabsTrigger value="forPosting">Post Leave Request Requests</TabsTrigger>
+                 )}
               <TabsTrigger value="leaveHistory">My Leave History</TabsTrigger>
             </TabsList>
             <TabsContent value="myPending" className="space-y-4">
@@ -131,6 +135,15 @@ export default async function LeaveDashboard() {
             <div className="flex grid-cols-1 md:grid-cols-2 gap-4">
               <div className="w-full">
               <PMDApproverForm />
+              </div>
+
+  
+  </div>
+</TabsContent>
+<TabsContent value="leaveHistory" className="space-y-4">
+            <div className="flex grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="w-full">
+              <LeaveHistoryForm />
               </div>
 
   

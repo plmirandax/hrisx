@@ -1,17 +1,14 @@
 'use client'
 import { Suspense, useEffect, useState } from 'react';
-import { columns } from "./components/columns";
-import { DataTable } from "./components/data-table";
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import axios from 'axios'; // Import Axios
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, ArrowUpRight, CheckCheckIcon, Hourglass, Trash } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { DataTable } from '../declined-leaves/components/data-table';
+import { columns } from '../declined-leaves/components/columns';
 
-export default function DeclinedLeavePage() {
+export default function LeaveHistoryForm() {
   const [leaves, setLeaves] = useState([]);
   const user = useCurrentUser();
 
@@ -37,15 +34,10 @@ export default function DeclinedLeavePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-    <div className="flex-1 flex flex-col p-4 mt-[-10px]">
-    <h2 className="text-2xl font-bold tracking-tight">Declined leave requests.</h2>
-        <p className="text-muted-foreground mt-[-4px]">
-          This is where you can manage your declined leave requests.
-        </p>
       <div className="flex-1 overflow-auto mt-8">
       <Card>
             <CardHeader className='font-semibold'>
-              Leave Details
+              Leave History
             </CardHeader>
             <CardContent>
             <Suspense fallback={<Skeleton />}>
@@ -56,7 +48,6 @@ export default function DeclinedLeavePage() {
           </Card>
  
       </div>
-    </div>
   </div>
   )
 }

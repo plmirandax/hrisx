@@ -16,6 +16,19 @@ export default function EmployeeManagementPage() {
   const [employeesTotal, setEmployeesTotal] = useState([]);
   const user = useCurrentUser();
 
+  if (!user) {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
+
+  const isAdmin = user?.role === 'Administrator';
+  const isUser = user?.role === 'User';
+  const isApprover = user?.role === 'Approver'
+  const isPMD = user?.role === 'PMD';
+
+  if (!isAdmin && !isPMD && !isApprover) {
+    return <p className='flex flex-col items-center justify-center text-center'>Unauthorized access.</p>;
+  }
+
   useEffect(() => {
     fetch('/api/fetch-employees') // replace with your API route
       .then(response => {

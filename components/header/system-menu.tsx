@@ -46,7 +46,7 @@ export function SystemMenu() {
         <NavigationMenuItem className="ml-4">
           <Link href="/dashboard/leave" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <CalendarCheck className="h-4 w-4 mr-2"/>View Payslip
+              <CalendarCheck className="h-4 w-4 mr-2"/>Leave Management
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>

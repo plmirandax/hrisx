@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import TeamSwitcher from './team-switcher'
 import { SystemMenu } from './system-menu'
+import { SideBarNav } from '../sidebar/sidebar'
 
 export function Header () {
   const router = useRouter();
@@ -22,6 +23,7 @@ export function Header () {
   return (
     <div className="flex w-full items-center justify-between mb-4">
       <header className="sticky top-0 flex h-16 items-center gap-6 border-b bg-background px-4 md:px-6 w-full">
+        <SideBarNav />
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <SystemMenu />
           <Sheet>

@@ -219,7 +219,7 @@ export const columns: ColumnDef<Leaves>[] = [
 
   
       return (
-        <Badge variant='destructive'>{status}</Badge>
+        <Badge variant='default'>{status}</Badge>
       );
     }
   },
@@ -239,7 +239,7 @@ export const columns: ColumnDef<Leaves>[] = [
       const status = row.original.status; // Accessing the status value from the row data
   
       return (
-        <Badge variant='destructive'>{status}</Badge>
+        <Badge variant='default'>{status}</Badge>
       );
     }
   },

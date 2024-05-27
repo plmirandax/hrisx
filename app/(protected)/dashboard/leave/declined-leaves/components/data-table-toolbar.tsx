@@ -28,9 +28,9 @@ export function DataTableToolbar<TData>({
 
         <Input
           placeholder="Filter requests..."
-          value={(table.getColumn("leaveType")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("leaveType")?.setFilterValue(event.target.value)
+            table.getColumn("status")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
