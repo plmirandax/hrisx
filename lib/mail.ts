@@ -48,7 +48,7 @@ export const sendLeaveNotif = async (
     from: "leave-notification@rdhardware.net",
     to: email,
     subject: "Leave Application",
-    html: `<p>Hey! ${firstName} ${lastName} have sent a ${leaveType} application starting fomr ${startDate} to ${endDate}. Click <a href="${leaveLink}">here</a> to view the leave request.</p>
+    html: `<p>Heads up! ${firstName} ${lastName} have sent a ${leaveType} application starting from ${startDate} to ${endDate}. <a href="${leaveLink}">Click here to view the leave request.</a> </p>
     <p>This is an auto generated email. Please do not reply.</p>`
   });
 };
@@ -78,7 +78,7 @@ export const sendUploadNotif = async (
     from: "payslip@rdhardware.net",
     to: email,
     subject: "Your Payslip",
-    html: `<p>Your payslip for the ${periods} of ${months} has been uploaded. <a href="${payslipFile}"> Click here to view it.</a></p>
+    html: `<p>Your payslip for the ${periods} of ${months} has been uploaded. <a href="${payslipFile}"> Click here to view your payslip.</a></p>
            <p>This is an auto-generated email. Please do not reply.</p>`
   });
 };
