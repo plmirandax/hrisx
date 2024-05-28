@@ -32,9 +32,10 @@ export const CreateLeave = async (values: z.infer<typeof CreateLeaveSchema>) => 
   // Retrieve the email associated with the given approverId
   const email = await getEmailByApproverId(approverId);
   const firstName = await getEmailByUserId(userId)
+  const lastName = await getEmailByUserId(userId)
 
   // Send email notification to the approver
-  await sendLeaveNotif(email, leaveType, firstName);
+  await sendLeaveNotif(email, leaveType, firstName, lastName, startDate, endDate);
 
   // Revalidate the path
   revalidatePath('/dashboard');

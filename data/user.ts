@@ -25,14 +25,14 @@ export const getUserById = async (id: string) => {
 export const getEmailByUserId = async (userId: string) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { firstName: true },
+    select: { firstName: true, lastName: true },
   });
 
   if (!user) {
     throw new Error('User not found!');
   }
 
-  return user.firstName;
+  return user.firstName, user.lastName;
 };
 
 export const getEmailByApproverId = async (approverId: string) => {
