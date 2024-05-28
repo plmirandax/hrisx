@@ -239,23 +239,27 @@ export const columns: ColumnDef<Leaves>[] = [
   {
     id: "select",
     header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
+      <div className="hidden sm:table-cell">
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="translate-y-[2px]"
+        />
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
+      <div className="hidden sm:table-cell">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="translate-y-[2px]"
+        />
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -263,14 +267,16 @@ export const columns: ColumnDef<Leaves>[] = [
   {
     accessorKey: "user.image",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="" />
+      <div className="hidden sm:table-cell">
+        <DataTableColumnHeader column={column} title="" />
+      </div>
     ),
     // Use a custom cell renderer to conditionally render the image or default user icon
     cell: ({ row }) => {
       const image = row.original.user.image; // Accessing the image value from the row data
   
       return (
-        <div className="flex items-center">
+        <div className="hidden sm:table-cell flex items-center">
           {image ? (
             <Image src={image} alt="User" className="h-8 w-8 rounded-full" />
           ) : (
@@ -296,74 +302,75 @@ export const columns: ColumnDef<Leaves>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Leave Type" />
     ),
-     // Use a custom cell renderer to display the content as a badge
-     cell: ({ row }) => {
+    // Use a custom cell renderer to display the content as a badge
+    cell: ({ row }) => {
       const leaveType = row.original.leaveType; // Accessing the status value from the row data
       return (
-        <Badge variant='secondary'>{leaveType}</Badge>
+        <Badge variant="secondary">{leaveType}</Badge>
       );
     }
   },
   {
     accessorKey: "startDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Start Date" />
+      <div className="hidden sm:table-cell">
+        <DataTableColumnHeader column={column} title="Start Date" />
+      </div>
     ),
-     // Use a custom cell renderer to display the content as a badge
-     cell: ({ row }) => {
+    // Use a custom cell renderer to display the content as a badge
+    cell: ({ row }) => {
       const startDate = row.original.startDate; // Accessing the status value from the row data
       return (
-        <Badge variant='outline'>{startDate}</Badge>
+        <div className="hidden sm:table-cell">
+          <Badge variant="outline">{startDate}</Badge>
+        </div>
       );
     }
   },
   {
     accessorKey: "endDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="End Date" />
+      <div className="hidden sm:table-cell">
+        <DataTableColumnHeader column={column} title="End Date" />
+      </div>
     ),
-         // Use a custom cell renderer to display the content as a badge
-         cell: ({ row }) => {
-          const endDate = row.original.endDate; // Accessing the status value from the row data
-          return (
-            <Badge variant='outline'>{endDate}</Badge>
-          );
-        }
+    // Use a custom cell renderer to display the content as a badge
+    cell: ({ row }) => {
+      const endDate = row.original.endDate; // Accessing the status value from the row data
+      return (
+        <div className="hidden sm:table-cell">
+          <Badge variant="outline">{endDate}</Badge>
+        </div>
+      );
+    }
   },
-
   {
     accessorKey: "reason",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Reason" />
+      <div className="hidden sm:table-cell">
+        <DataTableColumnHeader column={column} title="Reason" />
+      </div>
+    ),
+    cell: ({ row }) => (
+      <div className="hidden sm:table-cell">
+        {row.original.reason}
+      </div>
     ),
   },
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Approver Status" />
+      <div className="hidden sm:table-cell">
+        <DataTableColumnHeader column={column} title="Approver Status" />
+      </div>
     ),
     // Use a custom cell renderer to display the content as a badge
     cell: ({ row }) => {
       const status = row.original.status; // Accessing the status value from the row data
-  
-      // Determine badge color based on status
-      let badgeColor;
-      switch (status) {
-        case 'Pending':
-          badgeColor = 'warning';
-          break;
-        case 'Approved':
-          badgeColor = 'success';
-          break;
-        case 'Rejected':
-          badgeColor = 'danger';
-          break;
-        default:
-          badgeColor = 'primary';
-      }
-  
       return (
-        <Badge color={badgeColor}>{status}</Badge>
+        <div className="hidden sm:table-cell">
+          <Badge variant="pending">{status}</Badge>
+        </div>
       );
     }
   },

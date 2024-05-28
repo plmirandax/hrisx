@@ -53,8 +53,8 @@ export default async function LeaveDashboard() {
     <div className="flex flex-1 max-h-screen w-full flex-col">
       <div className="flex justify-between items-center mb-[-8px] ml-8 mr-8 mt-3">
         <Label className="text-2xl font-bold">Welcome to your Leave Management page, {user.user.firstName}!</Label>
+        <CreateLeaveForm />
       </div>
-      
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           <Card x-chunk="dashboard-01-chunk-0">
@@ -95,11 +95,9 @@ export default async function LeaveDashboard() {
           </Card>
         </div>
 
-    <div>
-      <CreateLeaveForm />
-    </div>
         <Tabs defaultValue="myPending" className="space-y-4">
-            <TabsList>
+          <div className="flex justify-center w-full space-x-4 mb-[-30px]">
+          <TabsList>
             <TabsTrigger value="myPending">My Leaves</TabsTrigger>
               {(isAdmin || isPMD || isApprover) && (
               <TabsTrigger value="forApproval">Approve Leaves</TabsTrigger>
@@ -107,9 +105,11 @@ export default async function LeaveDashboard() {
                  {(isAdmin || isPMD ) && (
               <TabsTrigger value="forPosting">Post Leaves</TabsTrigger>
                  )}
-              <TabsTrigger value="leaveHistory">My Leave History</TabsTrigger>
+              <TabsTrigger value="leaveHistory">Leave History</TabsTrigger>
             </TabsList>
-            <TabsContent value="myPending" className="space-y-4">
+          </div>
+            
+            <TabsContent value="myPending" className="space-y-4 mt-[-20px]">
             <div className="flex gap-2 md:grid-cols-2 mb-[-20px]">
               <div className="w-full">
                   <MyPendingLeaveForm />

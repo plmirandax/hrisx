@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import Link from 'next/link'
 import { CircleUser, ClipboardListIcon, FileTextIcon, HomeIcon, Menu, Package2, Search, Settings, User } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
@@ -11,8 +11,12 @@ import { signOut } from 'next-auth/react'
 import TeamSwitcher from './team-switcher'
 import { SystemMenu } from './system-menu'
 import { SideBarNav } from '../sidebar/sidebar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { useCurrentUser } from '@/hooks/use-current-user'
+import { Badge } from '../ui/badge'
 
 export function Header () {
+  const user = useCurrentUser();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -90,21 +94,47 @@ export function Header () {
             </div>
           </form>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <DropdownMenuTrigger asChild>
+  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+    <Avatar className="h-8 w-8">
+      {user?.image ? (
+        <AvatarImage src={user.image} alt={`${user?.firstName} ${user?.lastName}`} />
+      ) : (
+        <AvatarFallback>
+          {user?.firstName?.charAt(0)}
+          {user?.lastName?.charAt(0)}
+        </AvatarFallback>
+      )}
+    </Avatar>
+  </Button>
+</DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-medium leading-none">{user?.firstName} {user?.lastName}</p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {user?.email}
+            </p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            Profile
+            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            Settings
+            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleLogout}>
+          Log out
+          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
         </div>
       </header>
     </div>

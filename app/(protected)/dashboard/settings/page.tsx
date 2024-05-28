@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { Metadata } from "next";
+import { Separator } from "@/components/ui/separator";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -26,10 +27,16 @@ export default async function SettingsProfilePage() {
   const leaveTypes = await fetchLeaveType();
 
   return (
-<div className="flex space-x-8">
-      <div>
+<div className="flex space-x-8 justify-center">
+  <div>
+  <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
+          <p className="text-muted-foreground">
+            Manage your account, system settings and set e-mail preferences.
+          </p>
+          <Separator className="my-6"/>
+  </div>
+
       <CreateLeaveTypeForm />
-      </div>
       <div>
       <Card className="xl:col-span-2 w-[650px]">
               <CardHeader className="flex flex-row items-center justify-between">

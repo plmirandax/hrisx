@@ -34,26 +34,18 @@ export default function ApprovedLeavePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-    <div className="flex-1 flex flex-col p-4 mt-[-10px]">
-    <h2 className="text-2xl font-bold tracking-tight">Approved leave requests.</h2>
-        <p className="text-muted-foreground mt-[-4px]">
-          This is where you can manage your approved leave requests.
-        </p>
       <div className="flex-1 overflow-auto mt-8">
       <Card>
             <CardHeader className='font-semibold'>
-              Leave Details
+             Your Approved Leaves
             </CardHeader>
             <CardContent>
             <Suspense fallback={<Skeleton />}>
             <DataTable data={leaves} columns={columns} />
           </Suspense>
             </CardContent>
-  
           </Card>
- 
       </div>
-    </div>
   </div>
   )
 }
