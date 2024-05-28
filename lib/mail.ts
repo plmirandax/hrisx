@@ -39,11 +39,13 @@ export const sendLeaveNotif = async (
   firstName: string | null,
 ) => {
 
+  const leaveLink = `${domain}/dashboard/leave`;
+
   await resend.emails.send({
     from: "leave-notification@rdhardware.net",
     to: email,
     subject: "Leave Application",
-    html: `<p>Hey! ${firstName} have sent a ${leaveType} application.</p>
+    html: `<p>Hey! ${firstName} have sent a ${leaveType} application. Click <a href="${leaveLink}">here</a> to view the leave request.</p>
     <p>This is an auto generated email. Please do not reply.</p>`
   });
 };
