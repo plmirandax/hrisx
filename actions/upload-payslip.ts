@@ -4,7 +4,7 @@ import * as z from "zod";
 import { prisma } from "@/lib/db";
 import { CreateDepartmentSchema, UploadPayslipSchema } from "@/schemas";
 import { revalidatePath } from "next/cache";
-import { getEmailByUserId, getUserByEmail } from "@/data/user";
+import { getEmailByUserId, getEmailByUserIdUpload, getUserByEmail } from "@/data/user";
 import { sendLeaveNotif, sendUploadNotif } from "@/lib/mail";
 
 export const UploadPayslip = async (values: z.infer<typeof UploadPayslipSchema>) => {
@@ -26,7 +26,7 @@ export const UploadPayslip = async (values: z.infer<typeof UploadPayslipSchema>)
   });
 
     // Retrieve the email associated with the given userId
-    const email = await getEmailByUserId(userId);
+    const email = await getEmailByUserIdUpload(userId);
 
     // Send email notification with the payslip URL
     await sendUploadNotif(email, payslipFile, months, periods);

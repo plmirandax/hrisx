@@ -78,7 +78,7 @@ export const sendUploadNotif = async (
     from: "payslip@rdhardware.net",
     to: email,
     subject: "Your Payslip",
-    html: `<p>Your payslip for the ${periods} of ${months} has been uploaded. Click <a href="${payslipFile}">here</a> to view it.</p>
+    html: `<p>Your payslip for the ${periods} of ${months} has been uploaded. <a href="${payslipFile}"> Click here to view it.</a></p>
            <p>This is an auto-generated email. Please do not reply.</p>`
   });
 };
