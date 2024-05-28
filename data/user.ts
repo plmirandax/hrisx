@@ -32,7 +32,7 @@ export const getEmailByUserId = async (userId: string) => {
     throw new Error('User not found!');
   }
 
-  return user.firstName, user.lastName;
+  return [user.firstName, user.lastName];
 };
 
 export const getEmailByApproverId = async (approverId: string) => {
