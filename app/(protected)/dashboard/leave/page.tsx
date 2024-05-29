@@ -4,14 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fetchSubordinates } from "../_data/fetch-subordinates";
-import { fetchLeaveDataApprover } from "../_data/fetchdata";
-import { fetchLeaveDataUser, fetchLeaveDataUserApproved } from "../_data/fetch-leave-data-user";
 import { CreateLeaveForm } from "../_components/leave-form";
 import MyPendingLeaveForm from "./leave-components-forms/my-pending-leaves";
 import ApproverLeaveForm from "./leave-components-forms/approver-form";
 import PMDApproverForm from "./leave-components-forms/pmd-approver";
 import LeaveHistoryForm from "./leave-components-forms/leave-history";
+import { fetchLeaveDataApprover, fetchLeaveDataUser, fetchLeaveDataUserApproved, fetchSubordinates } from "@/actions/queries";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);

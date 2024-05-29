@@ -1,4 +1,4 @@
-import { ApproveLeaveSchema, ApprovePMDSchema, CreateDepartmentSchema, CreateLeaveSchema, CreateLeaveTypeSchema, NewPasswordSchema, ResetSchema, SettingsSchema, UploadPayslipSchema } from "@/schemas";
+import { ApproveLeaveSchema, ApprovePMDSchema, CreateDepartmentSchema, CreateLeaveSchema, CreateLeaveTypeSchema, NewPasswordSchema, RegisterSchema, ResetSchema, SettingsSchema, UploadPayslipSchema } from "@/schemas";
 import { prisma } from "@/lib/db";
 import { getEmailByApproverId, getEmailByUserId, getEmailByUserIdUpload, getUserByEmail, getUserById } from "@/data/user";
 import { sendLeaveNotif, sendPasswordResetEmail, sendUploadNotif, sendVerificationEmail } from "@/lib/mail";
@@ -474,5 +474,45 @@ export const UploadPayslip = async (values: z.infer<typeof UploadPayslipSchema>)
       return { error: "An error occurred while updating the leave request." };
     }
   };
+
+  export const register = async (values: z.infer<typeof RegisterSchema>) => {
+    const validatedFields = RegisterSchema.safeParse(values);
+  
+    if (!validatedFields.success) {
+      return { error: "Invalid fields!" };
+    }
+  
+    const { email, password, firstName, lastName, contactNo, address, approverId, role, department } = validatedFields.data;
+    const hashedPassword = await bcrypt.hash(password, 10);
+  
+    const existingUser = await getUserByEmail(email);
+  
+    if (existingUser) {
+      return { error: "Email already in use!" };
+    }
+  
+    await prisma.user.create({
+      data: {
+        firstName,
+        lastName,
+        approverId,
+        email,
+        department,
+        password: hashedPassword,
+        contactNo,
+        address,
+        role
+      },
+    });
+  
+    const verificationToken = await generateVerificationToken(email);
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token,
+    );
+  
+    return { success: "Confirmation email sent!" };
+  };
+  
   
   

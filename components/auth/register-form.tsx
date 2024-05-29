@@ -18,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { register } from "@/actions/register";
 import {
   Select,
   SelectContent,
@@ -39,6 +38,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { PlusCircleIcon } from "lucide-react";
+import { register } from "@/actions/queries";
 
 type Approvers = {
   id: string;
