@@ -41,7 +41,8 @@ import {
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Months, Periods } from "@prisma/client";
 import { toast } from "sonner";
-import { UploadPayslip } from "@/actions/upload-payslip";
+import { UploadPayslip } from "@/actions/queries";
+
 
 type Employees = {
   id: string;

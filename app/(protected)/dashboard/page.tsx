@@ -4,15 +4,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { auth } from "@/auth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fetchSubordinates } from "./_data/fetch-subordinates";
-import { fetchLeaveDataApprover } from "./_data/fetchdata";
-import { fetchLeaveDataUser, fetchLeaveDataUserApproved } from "./_data/fetch-leave-data-user";
 import { CreateLeaveForm } from "./_components/leave-form";
 import MyPendingLeaveForm from "./leave/leave-components-forms/my-pending-leaves";
 import ApproverLeaveForm from "./leave/leave-components-forms/approver-form";
 import PMDApproverForm from "./leave/leave-components-forms/pmd-approver";
 import ApprovedLeavePage from "./leave/approved-leaves/approved-leaves";
 import LeaveHistoryForm from "./leave/leave-components-forms/leave-history";
+import { fetchLeaveDataApprover, fetchLeaveDataUser, fetchLeaveDataUserApproved, fetchSubordinates } from "@/actions/queries";
 
 
 export default async function LeaveDashboard() {

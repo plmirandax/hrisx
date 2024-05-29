@@ -20,7 +20,8 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { createLeaveType } from "@/actions/leavetype-create";
+import { createLeaveType } from "@/actions/queries";
+
 
 export const CreateLeaveTypeForm= () => {
   const [error, setError] = useState<string | undefined>("");

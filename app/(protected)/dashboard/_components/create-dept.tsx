@@ -20,7 +20,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { createDepartment } from "@/actions/department-create";
+import { createDepartment } from "@/actions/queries";
 
 export const CreateDeptForm= () => {
   const [error, setError] = useState<string | undefined>("");

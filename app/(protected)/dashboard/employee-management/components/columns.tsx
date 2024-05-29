@@ -4,10 +4,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { Row } from "@tanstack/react-table";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, User, User2, User2Icon, UserCircle, UserCircle2 } from "lucide-react";
+import { MoreHorizontal, UserCircle, } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 
@@ -21,10 +21,10 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ApproveLeaveSchema } from "@/schemas";
 import { z } from "zod";
-import { ApproveLeaveRequest } from "@/actions/approve-leave";
 import { Badge } from "@/components/ui/badge";
 import { Employees } from "../data/schema";
 import Image from "next/image";
+import { ApproveLeaveRequest } from "@/actions/queries";
 
 type LeaveType = {
   id: string;

@@ -24,9 +24,9 @@ import { ApproveLeaveSchema } from "@/schemas";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { Statuses } from "@prisma/client";
-import { ApproveLeaveRequest } from "@/actions/approve-leave";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { ApproveLeaveRequest } from "@/actions/queries";
 
 type LeaveType = {
   id: string;

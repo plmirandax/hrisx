@@ -2,13 +2,8 @@
 
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-
-
-import { statuses } from "../data/data"
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { DataTableViewOptions } from "./data-table-view-options"
 import { RegisterForm } from "@/components/auth/register-form"
 import { File } from "lucide-react"
@@ -26,8 +21,6 @@ export function DataTableToolbar<TData>({
 
   const user = useCurrentUser();
   const isAdmin = user?.role === 'Administrator';
-  const isUser = user?.role === 'User';
-  const isApprover = user?.role === 'Approver'
   const isPMD = user?.role === 'PMD';
 
   return (

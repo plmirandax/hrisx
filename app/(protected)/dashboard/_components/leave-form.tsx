@@ -28,7 +28,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PlusCircleIcon } from "lucide-react";
-import { CreateLeave } from "@/actions/create-leave";
 import { Label } from "@/components/ui/label";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import {
@@ -42,6 +41,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { DatePicker } from "@/components/ui/datepicker";
+import { CreateLeave } from "@/actions/queries";
 
 type LeaveType = {
   id: string;

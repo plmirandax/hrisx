@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CreateLeaveTypeForm } from "../_components/create-leave-type"
-import { fetchLeaveType } from "../_data/fetch-leave-type";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -8,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { Metadata } from "next";
 import { Separator } from "@/components/ui/separator";
+import { fetchLeaveType } from "@/actions/queries";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);

@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { fetchDepartment } from "../../_data/fetch-department";
 import { CreateDeptForm } from "../../_components/create-dept";
+import { fetchDepartment } from "@/actions/queries";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);

@@ -23,9 +23,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { Statuses } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
-import { ApprovePMDRequest } from "@/actions/approve-leave-pmd";
 import { toast } from "sonner";
 import Image from "next/image";
+import { ApprovePMDRequest } from "@/actions/queries";
 
 type RowData = Row<Leaves>;
 const CellComponent = ({ row }: { row: RowData }) => {

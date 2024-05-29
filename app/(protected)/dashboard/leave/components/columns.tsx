@@ -15,9 +15,9 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ApproveLeaveSchema } from "@/schemas";
 import { z } from "zod";
-import { ApproveLeaveRequest } from "@/actions/approve-leave";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { ApproveLeaveRequest } from "@/actions/queries";
 
 type LeaveType = {
   id: string;
