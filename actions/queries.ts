@@ -1,3 +1,4 @@
+"use server"
 import { ApproveLeaveSchema, ApprovePMDSchema, CreateDepartmentSchema, CreateLeaveSchema, CreateLeaveTypeSchema, NewPasswordSchema, RegisterSchema, ResetSchema, SettingsSchema, UploadPayslipSchema } from "@/schemas";
 import { prisma } from "@/lib/db";
 import { getEmailByApproverId, getEmailByUserId, getEmailByUserIdUpload, getUserByEmail, getUserById } from "@/data/user";
