@@ -21,7 +21,11 @@ export default function MyPendingLeaveForm() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.post('/api/fetch-leaves-pending', { userId: user?.id }); // THis get's the leave requests of the logged in user, change to approverId if you want to get the for approval of leave requests.
+        const response = await axios.post('/api/fetch-leaves-pending', { userId: user?.id }, {
+          headers: {
+            'Cache-Control': 'no-store, max-age=0, must-revalidate'
+          }
+        }); // THis get's the leave requests of the logged in user, change to approverId if you want to get the for approval of leave requests.
   
         if (!response.data) {
           throw new Error('Failed to fetch leave data');
