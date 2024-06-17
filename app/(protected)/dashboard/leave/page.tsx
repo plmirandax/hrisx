@@ -97,6 +97,7 @@ export default async function LeaveDashboard() {
           <div className="flex justify-center w-full space-x-4 mb-[-30px]">
           <TabsList>
             <TabsTrigger value="myPending">My Leaves</TabsTrigger>
+              {/*
               {(isAdmin || isPMD || isApprover) && (
               <TabsTrigger value="forApproval">Approve Leaves</TabsTrigger>
               )}
@@ -104,7 +105,9 @@ export default async function LeaveDashboard() {
               <TabsTrigger value="forPosting">Post Leaves</TabsTrigger>
                  )}
               <TabsTrigger value="leaveHistory">Leave History</TabsTrigger>
+               */}
             </TabsList>
+           
           </div>
             
             <TabsContent value="myPending" className="space-y-4 mt-[-20px]">

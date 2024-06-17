@@ -17,7 +17,7 @@ export default function ApproverLeavePage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.post('/api/fetch-leaves-approver', { userId: user?.id }); // THis get's the leave requests of the logged in user, change to approverId if you want to get the for approval of leave requests.
+        const response = await axios.post('/api/fetch-leaves-approver', { userId: user?.id } , ); // THis get's the leave requests of the logged in user, change to approverId if you want to get the for approval of leave requests.
   
         if (!response.data) {
           throw new Error('Failed to fetch leave data');
